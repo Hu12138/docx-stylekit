@@ -1,0 +1,4339 @@
+meta:
+  name: Enterprise-Docx-Style v1.0
+  locale: zh-CN
+  description: 企业文档统一格式规范（默认+可选）
+  version: '1.0'
+catalog:
+  font_families:
+    chinese:
+      options:
+      - 仿宋_GB2312
+      - 宋体
+      - 微软雅黑
+      - 楷体_GB2312
+      - 黑体
+      default: 仿宋_GB2312
+    western:
+      options:
+      - Times New Roman
+      - Arial
+      - Calibri
+      default: Times New Roman
+  font_sizes_cn:
+    mapping:
+      初号: 42
+      小初: 36
+      一号: 26
+      小一: 24
+      二号: 22
+      小二: 18
+      三号: 16
+      小三: 15
+      四号: 14
+      小四: 12
+      五号: 10.5
+      小五: 9
+      六号: 7.5
+      小六: 6.5
+      七号: 5.5
+      八号: 5
+    default: 三号
+  line_spacing:
+    options:
+    - rule: single
+      label: 单倍行距
+    - rule: '1.5'
+      label: 1.5 倍行距
+    - rule: double
+      label: 两倍行距
+    - rule: exact
+      label: 固定值(磅)
+    - rule: at_least
+      label: 最小值(磅)
+    defaults:
+      paragraph:
+        rule: '1.5'
+      heading:
+        rule: double
+      title:
+        rule: exact
+        value_pt: 31
+  colors:
+    theme:
+    - text1
+    - text2
+    - background1
+    - background2
+    - accent1
+    - accent2
+    - accent3
+    - accent4
+    - accent5
+    - accent6
+    - hyperlink
+    - followedHyperlink
+    hex_allowed: true
+    default_text: text1
+    default_accent: accent1
+  alignments:
+    paragraph:
+      options:
+      - left
+      - center
+      - right
+      - justify
+      - distribute
+      default: justify
+    table:
+      options:
+      - left
+      - center
+      - right
+      default: center
+  indent:
+    first_line:
+      options:
+      - type: chars
+        value: 2
+      - type: cm
+        value: 0.74
+      - type: none
+        value: 0
+      default:
+        type: chars
+        value: 2
+    left_right_cm:
+      options:
+      - 0
+      - 0.5
+      - 1.0
+      - 1.5
+      - 2.0
+      default_left: 0
+      default_right: 0
+  numbering_styles:
+    multilevel_presets:
+    - id: decimal-dot
+      lvl:
+        1:
+          fmt: decimal
+          text: '%1'
+        2:
+          fmt: decimal
+          text: '%1.%2'
+        3:
+          fmt: decimal
+          text: '%1.%2.%3'
+    - id: chinese-section
+      lvl:
+        1:
+          fmt: decimal
+          text: 第%1章
+        2:
+          fmt: decimal
+          text: '%1.%2'
+        3:
+          fmt: decimal
+          text: '%1.%2.%3'
+    default: decimal-dot
+    restart_per_level: false
+  page_sizes:
+    options:
+    - A4
+    - A3
+    - Letter
+    default: A4
+  orientation:
+    options:
+    - portrait
+    - landscape
+    default: portrait
+  margins_cm:
+    defaults:
+      top: 2.5
+      bottom: 2.5
+      left: 2.8
+      right: 2.8
+      gutter: 0
+    options_range:
+      min: 1.5
+      max: 4.0
+policy:
+  prefer_styles_over_direct_formatting: true
+  forbid_run_direct_color: false
+  forbid_run_direct_size: false
+  heading_bind_numbering: true
+  allow_char_styles:
+  - Emphasis
+  - Strong
+  - Code
+  sections:
+    minimize_sections: true
+    enforce_title_first_page_diff: true
+    even_odd_headers: false
+page_setup:
+  paper:
+    default: A4
+    options:
+    - A4
+    - A3
+    - Letter
+  orientation:
+    default: portrait
+  margins_cm:
+    top: 2.5
+    bottom: 2.5
+    left: 2.8
+    right: 2.8
+    header: 1.5
+    footer: 1.75
+    gutter: 0
+  columns:
+    count: 1
+  page_numbering:
+    position: footer
+    format: decimal
+    start_at: 1
+    show_total: false
+  title_page:
+    separate_section: true
+    count_in_page_number: false
+  language:
+    document: zh-CN
+    proofing: zh-CN
+theme:
+  colors:
+    text1: '#000000'
+    background1: '#FFFFFF'
+    accent1: '#3452FF'
+    accent2: '#00A6A6'
+    accent3: '#F39C12'
+    accent4: '#E74C3C'
+    accent5: '#8E44AD'
+    accent6: '#16A085'
+    dk2: '#44546A'
+    lt2: '#E7E6E6'
+    hlink: '#0563C1'
+    folHlink: '#954F72'
+  fonts:
+    major:
+      latin: Times New Roman
+      ea: 仿宋_GB2312
+    minor:
+      latin: Times New Roman
+      ea: 仿宋_GB2312
+styles:
+  Normal:
+    type: paragraph
+    based_on: null
+    next: Normal
+    rPr:
+      eastAsia:
+        default: 仿宋_GB2312
+        options_from: catalog.font_families.chinese
+      ascii:
+        default: Times New Roman
+        options_from: catalog.font_families.western
+      size_cn:
+        default: 三号
+        mapping_from: catalog.font_sizes_cn.mapping
+      bold: false
+      italic: false
+      color:
+        theme: text1
+      underline: none
+    pPr:
+      alignment:
+        default: justify
+        options_from: catalog.alignments.paragraph.options
+      line_spacing:
+        default:
+          rule: '1.5'
+        options_from: catalog.line_spacing.options
+      space_before_pt: 0
+      space_after_pt: 0
+      indent:
+        first_line:
+          default:
+            type: chars
+            value: 2
+          options_from: catalog.indent.first_line.options
+        left_cm: 0
+        right_cm: 0
+      outline_level: null
+  Title:
+    type: paragraph
+    based_on: Normal
+    rPr:
+      size_cn: 小二
+      bold: true
+      color:
+        theme: text1
+    pPr:
+      alignment: center
+      line_spacing:
+        rule: exact
+        value_pt: 31
+      space_before_pt: 0
+      space_after_pt: 12
+      indent:
+        first_line:
+          type: none
+          value: 0
+        left_cm: 0
+        right_cm: 0
+  Heading1:
+    type: paragraph
+    based_on: Normal
+    link_char_style: Heading1Char
+    rPr:
+      size_cn: 三号
+      bold: true
+    pPr:
+      alignment: justify
+      line_spacing:
+        rule: double
+      indent:
+        first_line:
+          type: chars
+          value: 2
+        left_cm: 0
+        right_cm: 0
+      outline_level: 0
+      keep_next: true
+  Heading2:
+    type: paragraph
+    based_on: Normal
+    link_char_style: Heading2Char
+    rPr:
+      size_cn: 三号
+      bold: false
+    pPr:
+      alignment: justify
+      line_spacing:
+        rule: double
+      indent:
+        first_line:
+          type: chars
+          value: 2
+        left_cm: 0
+        right_cm: 0
+      outline_level: 1
+      keep_next: true
+  Heading3:
+    type: paragraph
+    based_on: Normal
+    rPr:
+      size_cn: 小三
+      bold: false
+    pPr:
+      alignment: justify
+      line_spacing:
+        rule: '1.5'
+      indent:
+        first_line:
+          type: chars
+          value: 2
+        left_cm: 0
+        right_cm: 0
+      outline_level: 2
+  Caption:
+    type: paragraph
+    based_on: Normal
+    rPr:
+      size_cn: 小四
+      bold: false
+    pPr:
+      alignment: center
+      space_before_pt: 6
+      space_after_pt: 6
+  TOC1:
+    type: paragraph
+    based_on: Normal
+    rPr:
+      size_cn: 小四
+    pPr:
+      tabs:
+      - pos_cm: 16
+        leader: dot
+        align: right
+      indent:
+        first_line:
+          type: none
+          value: 0
+        left_cm: 0
+        right_cm: 0
+  TOC2:
+    type: paragraph
+    based_on: TOC1
+    pPr:
+      indent:
+        first_line:
+          type: none
+          value: 0
+        left_cm: 0.74
+        right_cm: 0
+tables:
+  default_style: TableGrid
+  width_mode: auto
+  alignment:
+    default: center
+    options_from: catalog.alignments.table.options
+  header_row_repeat: true
+  row_cant_split: true
+  cell_margins_cm:
+    top: 0.1
+    bottom: 0.1
+    left: 0.15
+    right: 0.15
+  borders:
+    apply: true
+    color:
+      theme: text1
+    width_pt: 0.5
+numbering:
+  preset: decimal-dot
+  bind_headings:
+    level1: Heading1
+    level2: Heading2
+    level3: Heading3
+  start_at:
+    level1: 1
+    level2: 1
+    level3: 1
+  indent:
+    level1:
+      hanging_chars: 2
+    level2:
+      hanging_chars: 2
+    level3:
+      hanging_chars: 2
+  restart_per_level: false
+headers_footers:
+  header:
+    use_different_first_page: true
+    use_different_even_odd: false
+    text_style: Normal
+    components:
+    - type: text
+      value: 公司名称
+      align: left
+    - type: text
+      value: 文档名称
+      align: center
+  footer:
+    page_number:
+      position: center
+      pattern: PAGE
+      show_total: false
+      style: Normal
+validation:
+  forbid_direct_run_props:
+    color: false
+    size: false
+    fonts: false
+  enforce_paragraph_styles:
+    headings_must_use:
+    - Heading1
+    - Heading2
+    - Heading3
+    body_must_use:
+    - Normal
+  toc:
+    must_exist: true
+    levels:
+    - 1
+    - 2
+    - 3
+    update_required: true
+  sections:
+    max_count: 6
+    required:
+    - name: cover
+      first_page_different: true
+    - name: body
+      page_number_from: 1
+styles_observed:
+  paragraph_styles:
+    a:
+      name: Normal
+      based_on: null
+      link_char_style: null
+      rPr:
+        eastAsia: 仿宋_GB2312
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 16.0
+        size_cn: 三号
+        color: null
+      pPr:
+        alignment: null
+        line:
+          rule: exact
+          value_pt: 28.0
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: null
+        keep_next: false
+    '1':
+      name: heading 1
+      based_on: a
+      link_char_style: '10'
+      rPr:
+        eastAsia: 黑体
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: null
+        size_cn: null
+        color:
+          hex: '#000000'
+      pPr:
+        alignment: null
+        line:
+          rule: auto
+        space_before_pt: 12.0
+        space_after_pt: 12.0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: 0
+        keep_next: true
+    '2':
+      name: heading 2
+      based_on: a
+      link_char_style: null
+      rPr:
+        eastAsia: 楷体_GB2312
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: null
+        size_cn: null
+        color:
+          hex: '#000000'
+      pPr:
+        alignment: null
+        line:
+          rule: auto
+        space_before_pt: 12.0
+        space_after_pt: 12.0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: 1
+        keep_next: true
+    '3':
+      name: heading 3
+      based_on: a
+      link_char_style: '30'
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: null
+        size_cn: null
+        color:
+          hex: '#000000'
+      pPr:
+        alignment: null
+        line:
+          rule: '1.5'
+        space_before_pt: 10.0
+        space_after_pt: 10.0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: 2
+        keep_next: true
+    '4':
+      name: heading 4
+      based_on: a
+      link_char_style: '40'
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: true
+        italic: false
+        underline: none
+        size_pt: 14.0
+        size_cn: 四号
+        color:
+          hex: '#000000'
+      pPr:
+        alignment: null
+        line:
+          rule: '1.5'
+        space_before_pt: 10.0
+        space_after_pt: 10.0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: 3
+        keep_next: true
+    '5':
+      name: heading 5
+      based_on: '50'
+      link_char_style: null
+      rPr: {}
+      pPr:
+        alignment: both
+        line:
+          rule: single
+        space_before_pt: 8.15
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: null
+        keep_next: false
+    '6':
+      name: heading 6
+      based_on: '60'
+      link_char_style: null
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: null
+        size_cn: null
+        color: null
+      pPr:
+        alignment: both
+        line:
+          rule: single
+        space_before_pt: 8.15
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: null
+        keep_next: false
+    '7':
+      name: heading 7
+      based_on: null
+      link_char_style: null
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: true
+        italic: false
+        underline: none
+        size_pt: 12.0
+        size_cn: 小四
+        color: null
+      pPr:
+        alignment: both
+        line:
+          rule: auto
+        space_before_pt: 12.0
+        space_after_pt: 3.2
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: 6
+        keep_next: true
+    '50':
+      name: 样式5
+      based_on: '11'
+      link_char_style: null
+      rPr:
+        eastAsia: 黑体
+        ascii: null
+        bold: true
+        italic: false
+        underline: none
+        size_pt: null
+        size_cn: null
+        color: null
+      pPr:
+        alignment: null
+        line:
+          rule: single
+        space_before_pt: 7.8
+        space_after_pt: 0
+        indent:
+          first_line:
+            type: chars
+            value: 0.0
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: 4
+        keep_next: false
+    '11':
+      name: 列表段落1
+      based_on: a
+      link_char_style: null
+      rPr: {}
+      pPr:
+        alignment: null
+        line: null
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line:
+            type: chars
+            value: 2.0
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: null
+        keep_next: false
+    '60':
+      name: 样式6
+      based_on: '50'
+      link_char_style: null
+      rPr: {}
+      pPr:
+        alignment: null
+        line:
+          rule: single
+        space_before_pt: 2.5
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: 5
+        keep_next: false
+    a3:
+      name: Normal Indent
+      based_on: a
+      link_char_style: a4
+      rPr:
+        eastAsia: 宋体
+        ascii: Times New Roman
+        bold: false
+        italic: false
+        underline: none
+        size_pt: null
+        size_cn: null
+        color: null
+      pPr:
+        alignment: null
+        line:
+          rule: '1.5'
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line:
+            type: chars
+            value: 2.0
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: null
+        keep_next: false
+    TOC3:
+      name: toc 3
+      based_on: a
+      link_char_style: null
+      rPr: {}
+      pPr:
+        alignment: null
+        line: null
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 1.48
+          right_cm: 0.0
+        outline_level: null
+        keep_next: false
+    a5:
+      name: Date
+      based_on: a
+      link_char_style: null
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: true
+        italic: false
+        underline: none
+        size_pt: 24.0
+        size_cn: 小一
+        color: null
+      pPr:
+        alignment: null
+        line: null
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0.18
+          right_cm: 0.0
+        outline_level: null
+        keep_next: false
+    a6:
+      name: footer
+      based_on: a
+      link_char_style: null
+      rPr:
+        eastAsia: null
+        ascii: Calibri
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 9.0
+        size_cn: 小五
+        color: null
+      pPr:
+        alignment: null
+        line: null
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: null
+        keep_next: false
+    a7:
+      name: header
+      based_on: a
+      link_char_style: a8
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 9.0
+        size_cn: 小五
+        color: null
+      pPr:
+        alignment: center
+        line: null
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: null
+        keep_next: false
+    TOC1:
+      name: toc 1
+      based_on: a
+      link_char_style: null
+      rPr: {}
+      pPr: {}
+    TOC2:
+      name: toc 2
+      based_on: a
+      link_char_style: null
+      rPr: {}
+      pPr:
+        alignment: null
+        line: null
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0.74
+          right_cm: 0.0
+        outline_level: null
+        keep_next: false
+    a9:
+      name: Normal (Web)
+      based_on: a
+      link_char_style: null
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 12.0
+        size_cn: 小四
+        color: null
+      pPr: {}
+    ac:
+      name: 文档正文
+      based_on: null
+      link_char_style: null
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 12.0
+        size_cn: 小四
+        color: null
+      pPr:
+        alignment: both
+        line:
+          rule: at_least
+          value_pt: 18.0
+        space_before_pt: 3.0
+        space_after_pt: 3.0
+        indent:
+          first_line:
+            type: cm
+            value: 0.85
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: null
+        keep_next: false
+    ad:
+      name: 功规
+      based_on: null
+      link_char_style: null
+      rPr:
+        eastAsia: 仿宋
+        ascii: 微软雅黑
+        bold: false
+        italic: false
+        underline: none
+        size_pt: null
+        size_cn: null
+        color: null
+      pPr:
+        alignment: null
+        line: null
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: null
+        keep_next: false
+    Style35:
+      name: _Style 35
+      based_on: a
+      link_char_style: null
+      rPr:
+        eastAsia: 宋体
+        ascii: Arial
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 8.0
+        size_cn: 六号
+        color: null
+      pPr:
+        alignment: center
+        line: null
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: null
+        keep_next: false
+    '42':
+      name: 正文列4_2
+      based_on: a
+      link_char_style: null
+      rPr:
+        eastAsia: null
+        ascii: 宋体
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 12.0
+        size_cn: 小四
+        color: null
+      pPr:
+        alignment: null
+        line:
+          rule: exact
+          value_pt: 18.0
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: null
+        keep_next: false
+    WPSOffice1:
+      name: WPSOffice手动目录 1
+      based_on: null
+      link_char_style: null
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: null
+        size_cn: null
+        color: null
+      pPr: {}
+    WPSOffice2:
+      name: WPSOffice手动目录 2
+      based_on: null
+      link_char_style: null
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: null
+        size_cn: null
+        color: null
+      pPr:
+        alignment: null
+        line: null
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0.35
+          right_cm: 0.0
+        outline_level: null
+        keep_next: false
+    WPSOffice3:
+      name: WPSOffice手动目录 3
+      based_on: null
+      link_char_style: null
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: null
+        size_cn: null
+        color: null
+      pPr:
+        alignment: null
+        line: null
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0.71
+          right_cm: 0.0
+        outline_level: null
+        keep_next: false
+    ae:
+      name: List Paragraph
+      based_on: a
+      link_char_style: null
+      rPr: {}
+      pPr:
+        alignment: null
+        line: null
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line:
+            type: chars
+            value: 2.0
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: null
+        keep_next: false
+    af:
+      name: 正文文字
+      based_on: a
+      link_char_style: null
+      rPr:
+        eastAsia: 宋体
+        ascii: Arial
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 12.0
+        size_cn: 小四
+        color: null
+      pPr:
+        alignment: null
+        line:
+          rule: '1.5'
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line:
+            type: chars
+            value: 2.0
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: null
+        keep_next: false
+  character_styles:
+    a0:
+      name: Default Paragraph Font
+      based_on: null
+      link_char_style: null
+      rPr: {}
+      pPr: {}
+    ab:
+      name: Hyperlink
+      based_on: null
+      link_char_style: null
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: false
+        italic: false
+        underline: single
+        size_pt: null
+        size_cn: null
+        color:
+          hex: '#0000FF'
+      pPr: {}
+    '40':
+      name: 标题 4 字符
+      based_on: null
+      link_char_style: '4'
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: true
+        italic: false
+        underline: none
+        size_pt: 14.0
+        size_cn: 四号
+        color:
+          hex: '#000000'
+      pPr: {}
+    a8:
+      name: 页眉 字符
+      based_on: a0
+      link_char_style: a7
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 9.0
+        size_cn: 小五
+        color: null
+      pPr: {}
+    a4:
+      name: 正文缩进 字符
+      based_on: null
+      link_char_style: a3
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 10.5
+        size_cn: 五号
+        color: null
+      pPr: {}
+    '10':
+      name: 标题 1 字符
+      based_on: null
+      link_char_style: '1'
+      rPr:
+        eastAsia: 黑体
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 16.0
+        size_cn: 三号
+        color:
+          hex: '#000000'
+      pPr: {}
+    '30':
+      name: 标题 3 字符
+      based_on: null
+      link_char_style: '3'
+      rPr:
+        eastAsia: 仿宋_GB2312
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 16.0
+        size_cn: 三号
+        color:
+          hex: '#000000'
+      pPr: {}
+  table_styles:
+    a1:
+      name: Normal Table
+      based_on: null
+      link_char_style: null
+      rPr: {}
+      pPr: {}
+    aa:
+      name: Table Grid
+      based_on: a1
+      link_char_style: null
+      rPr: {}
+      pPr:
+        alignment: both
+        line: null
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: null
+        keep_next: false
+  doc_defaults:
+    rPr:
+      eastAsia: 宋体
+      ascii: Times New Roman
+      bold: false
+      italic: false
+      underline: none
+      size_pt: null
+      size_cn: null
+      color: null
+    pPr: {}
+numbering_observed:
+  abstract:
+    '0':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '1':
+      levels:
+        0:
+          fmt: bullet
+          text: 
+          pStyle: null
+    '2':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '3':
+      levels:
+        0:
+          fmt: decimal
+          text: (%1)
+          pStyle: null
+    '4':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '5':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '6':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '7':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '8':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '9':
+      levels:
+        0:
+          fmt: chineseCounting
+          text: （%1）
+          pStyle: null
+    '10':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '11':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '12':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '13':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '14':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '15':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '16':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '17':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '18':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '19':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '20':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '21':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '22':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '23':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '24':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1.'
+          pStyle: null
+    '25':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '26':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '27':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '28':
+      levels:
+        0:
+          fmt: chineseCounting
+          text: '%1、'
+          pStyle: null
+    '29':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '30':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1.'
+          pStyle: null
+    '31':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '32':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '33':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '34':
+      levels:
+        0:
+          fmt: chineseCounting
+          text: （%1）
+          pStyle: null
+    '35':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '36':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '37':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '38':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '39':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '40':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '41':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '42':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '43':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '44':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '45':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '46':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '47':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1.'
+          pStyle: null
+    '48':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '49':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '50':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '51':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1.'
+          pStyle: null
+        1:
+          fmt: decimal
+          text: '%1.%2.'
+          pStyle: '2'
+        2:
+          fmt: decimal
+          text: '%1.%2.%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%1.%2.%3.%4.'
+          pStyle: '4'
+        4:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.'
+          pStyle: '5'
+        5:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.'
+          pStyle: '6'
+        6:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.'
+          pStyle: '7'
+        7:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.%8.'
+          pStyle: null
+        8:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.%8.%9.'
+          pStyle: null
+    '52':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1.'
+          pStyle: null
+    '53':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '54':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '55':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1.'
+          pStyle: null
+    '56':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '57':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1.'
+          pStyle: null
+    '58':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '59':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '60':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '61':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '62':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1.'
+          pStyle: null
+    '63':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '64':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '65':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '66':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '67':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1.'
+          pStyle: null
+        1:
+          fmt: decimal
+          text: '%1.%2.'
+          pStyle: null
+        2:
+          fmt: decimal
+          text: '%1.%2.%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%1.%2.%3.%4.'
+          pStyle: null
+        4:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.'
+          pStyle: '50'
+        5:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.'
+          pStyle: '60'
+        6:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.'
+          pStyle: null
+        7:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.%8.'
+          pStyle: null
+        8:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.%8.%9.'
+          pStyle: null
+    '68':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '69':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1.'
+          pStyle: null
+    '70':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '71':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '72':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '73':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '74':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '75':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '76':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '77':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '78':
+      levels:
+        0:
+          fmt: chineseCounting
+          text: （%1）
+          pStyle: null
+    '79':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '80':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '81':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1.'
+          pStyle: null
+        1:
+          fmt: decimal
+          text: '%1.%2.'
+          pStyle: null
+        2:
+          fmt: decimal
+          text: '%1.%2.%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%1.%2.%3.%4.'
+          pStyle: null
+        4:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.'
+          pStyle: null
+        5:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.'
+          pStyle: null
+        7:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.%8.'
+          pStyle: null
+        8:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.%8.%9.'
+          pStyle: null
+    '82':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '83':
+      levels:
+        0:
+          fmt: bullet
+          text: 
+          pStyle: null
+        1:
+          fmt: bullet
+          text: 
+          pStyle: null
+        2:
+          fmt: bullet
+          text: 
+          pStyle: null
+        3:
+          fmt: bullet
+          text: 
+          pStyle: null
+        4:
+          fmt: bullet
+          text: 
+          pStyle: null
+        5:
+          fmt: bullet
+          text: 
+          pStyle: null
+        6:
+          fmt: bullet
+          text: 
+          pStyle: null
+        7:
+          fmt: bullet
+          text: 
+          pStyle: null
+        8:
+          fmt: bullet
+          text: 
+          pStyle: null
+    '84':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '85':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '86':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '87':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1）'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2.'
+          pStyle: null
+        2:
+          fmt: lowerLetter
+          text: '%3)'
+          pStyle: null
+        3:
+          fmt: lowerRoman
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerRoman
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerLetter
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: lowerLetter
+          text: '%7)'
+          pStyle: null
+        7:
+          fmt: lowerRoman
+          text: '%8.'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9)'
+          pStyle: null
+    '88':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+    '89':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: lowerLetter
+          text: '%2)'
+          pStyle: null
+        2:
+          fmt: lowerRoman
+          text: '%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%4.'
+          pStyle: null
+        4:
+          fmt: lowerLetter
+          text: '%5)'
+          pStyle: null
+        5:
+          fmt: lowerRoman
+          text: '%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%7.'
+          pStyle: null
+        7:
+          fmt: lowerLetter
+          text: '%8)'
+          pStyle: null
+        8:
+          fmt: lowerRoman
+          text: '%9.'
+          pStyle: null
+  nums:
+    '1': '51'
+    '2': '67'
+    '3': '28'
+    '4': '78'
+    '5': '1'
+    '6': '81'
+    '7': '9'
+    '8': '62'
+    '9': '3'
+    '10': '15'
+    '11': '83'
+    '12': '61'
+    '13': '70'
+    '14': '49'
+    '15': '86'
+    '16': '66'
+    '17': '26'
+    '18': '44'
+    '19': '59'
+    '20': '40'
+    '21': '56'
+    '22': '80'
+    '23': '69'
+    '24': '63'
+    '25': '53'
+    '26': '30'
+    '27': '21'
+    '28': '87'
+    '29': '33'
+    '30': '55'
+    '31': '0'
+    '32': '29'
+    '33': '54'
+    '34': '52'
+    '35': '35'
+    '36': '32'
+    '37': '6'
+    '38': '75'
+    '39': '11'
+    '40': '57'
+    '41': '7'
+    '42': '45'
+    '43': '18'
+    '44': '58'
+    '45': '41'
+    '46': '22'
+    '47': '48'
+    '48': '79'
+    '49': '17'
+    '50': '77'
+    '51': '47'
+    '52': '27'
+    '53': '85'
+    '54': '42'
+    '55': '12'
+    '56': '37'
+    '57': '71'
+    '58': '74'
+    '59': '10'
+    '60': '2'
+    '61': '72'
+    '62': '13'
+    '63': '8'
+    '64': '50'
+    '65': '31'
+    '66': '60'
+    '67': '16'
+    '68': '24'
+    '69': '43'
+    '70': '4'
+    '71': '73'
+    '72': '38'
+    '73': '5'
+    '74': '65'
+    '75': '64'
+    '76': '39'
+    '77': '82'
+    '78': '34'
+    '79': '20'
+    '80': '89'
+    '81': '25'
+    '82': '23'
+    '83': '14'
+    '84': '68'
+    '85': '19'
+    '86': '46'
+    '87': '88'
+    '88': '84'
+    '89': '36'
+    '90': '76'
+page_setup_observed:
+  sections:
+  - pgSz:
+      w_cm: 21.0
+      h_cm: 29.7
+      orient: portrait
+    pgMar:
+      top: 3.7
+      bottom: 3.5
+      left: 2.8
+      right: 2.6
+      header: 1.5
+      footer: 1.75
+      gutter: 0.0
+    titlePg: false
+    pgNumStart: null
+    headerRefs:
+    - type: default
+      rId: rId8
+    footerRefs:
+    - type: default
+      rId: rId9
+  - pgSz:
+      w_cm: 21.0
+      h_cm: 29.7
+      orient: portrait
+    pgMar:
+      top: 2.54
+      bottom: 2.54
+      left: 3.17
+      right: 3.17
+      header: 1.5
+      footer: 1.75
+      gutter: 0.0
+    titlePg: false
+    pgNumStart: 1
+    headerRefs: []
+    footerRefs:
+    - type: default
+      rId: rId10
+  - pgSz:
+      w_cm: 21.0
+      h_cm: 29.7
+      orient: portrait
+    pgMar:
+      top: 2.54
+      bottom: 2.54
+      left: 3.17
+      right: 3.17
+      header: 1.5
+      footer: 1.75
+      gutter: 0.0
+    titlePg: false
+    pgNumStart: null
+    headerRefs: []
+    footerRefs: []
+headers_footers_observed:
+  headers:
+    word/header1.xml:
+      has_page: false
+      patterns: []
+  footers:
+    word/footer1.xml:
+      has_page: false
+      patterns: []
+    word/footer2.xml:
+      has_page: true
+      patterns:
+      - ' PAGE  \* MERGEFORMAT '
