@@ -1,0 +1,2 @@
+[console_scripts]
+docx-stylekit = docx_stylekit.cli:main

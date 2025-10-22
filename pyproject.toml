@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "docx-stylekit"
+version = "0.1.0"
+description = "Extract, normalize and merge DOCX style baselines via XML."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = [
+  "lxml>=5.2.2",
+  "PyYAML>=6.0.1",
+  "click>=8.1.7",
+  "colorama>=0.4.6",
+]
+
+[project.scripts]
+docx-stylekit = "docx_stylekit.cli:main"

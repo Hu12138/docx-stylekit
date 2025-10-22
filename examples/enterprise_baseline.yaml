@@ -1,0 +1,307 @@
+meta:
+  name: "Enterprise-Docx-Style v1.0"
+  locale: "zh-CN"
+  description: "企业文档统一格式规范（默认+可选）"
+  version: "1.0"
+
+catalog:                      # ===== 可选值目录（统一引用，避免每处重复） =====
+  font_families:
+    chinese:
+      options: ["仿宋_GB2312", "宋体", "微软雅黑", "楷体_GB2312", "黑体"]
+      default: "仿宋_GB2312"
+    western:
+      options: ["Times New Roman", "Arial", "Calibri"]
+      default: "Times New Roman"
+
+  font_sizes_cn:              # 中文字号与pt映射（供引用）
+    mapping:
+      初号:   42
+      小初:   36
+      一号:   26
+      小一:   24
+      二号:   22
+      小二:   18
+      三号:   16
+      小三:   15
+      四号:   14
+      小四:   12
+      五号:   10.5
+      小五:   9
+      六号:   7.5
+      小六:   6.5
+      七号:   5.5
+      八号:   5
+    default: "三号"           # << 你指定的默认：正文字号=三号（16pt）
+
+  line_spacing:
+    options:                  # 与 Word 对应的规则
+      - { rule: "single",    label: "单倍行距" }
+      - { rule: "1.5",       label: "1.5 倍行距" }
+      - { rule: "double",    label: "两倍行距" }
+      - { rule: "exact",     label: "固定值(磅)" }
+      - { rule: "at_least",  label: "最小值(磅)" }
+    defaults:
+      paragraph: { rule: "1.5" }       # 正文默认 1.5 倍
+      heading:   { rule: "double" }    # 标题默认两倍
+      title:     { rule: "exact", value_pt: 31 }  # 例：标题固定 31 磅
+
+  colors:
+    theme: ["text1","text2","background1","background2","accent1","accent2","accent3","accent4","accent5","accent6","hyperlink","followedHyperlink"]
+    hex_allowed: true
+    default_text: "text1"
+    default_accent: "accent1"
+
+  alignments:
+    paragraph:
+      options: ["left","center","right","justify","distribute"]
+      default: "justify"      # 正文两端对齐
+    table:
+      options: ["left","center","right"]
+      default: "center"
+
+  indent:
+    first_line:
+      options:
+        - { type: "chars", value: 2 }  # 首行缩进2字符（XML为 firstLineChars=200）
+        - { type: "cm", value: 0.74 }  # 约等于2字符
+        - { type: "none", value: 0 }
+      default: { type: "chars", value: 2 }
+    left_right_cm:
+      options: [0, 0.5, 1.0, 1.5, 2.0]
+      default_left: 0
+      default_right: 0
+
+  numbering_styles:
+    multilevel_presets:
+      - id: "decimal-dot"     # 1, 1.1, 1.1.1
+        lvl:
+          1: { fmt: "decimal",      text: "%1" }
+          2: { fmt: "decimal",      text: "%1.%2" }
+          3: { fmt: "decimal",      text: "%1.%2.%3" }
+      - id: "chinese-section"  # 第1章/1.1/1.1.1
+        lvl:
+          1: { fmt: "decimal",      text: "第%1章" }
+          2: { fmt: "decimal",      text: "%1.%2" }
+          3: { fmt: "decimal",      text: "%1.%2.%3" }
+    default: "decimal-dot"
+    restart_per_level: false   # 是否在高层级变化时重启下层编号
+
+  page_sizes:
+    options: ["A4","A3","Letter"]
+    default: "A4"
+  orientation:
+    options: ["portrait","landscape"]
+    default: "portrait"
+  margins_cm:
+    defaults: { top: 2.5, bottom: 2.5, left: 2.8, right: 2.8, gutter: 0 }
+    options_range: { min: 1.5, max: 4.0 }
+
+policy:                        # ===== 基线策略（强约束）=====
+  prefer_styles_over_direct_formatting: true
+  forbid_run_direct_color: false       # 若要更严可置 true
+  forbid_run_direct_size:  false
+  heading_bind_numbering:    true      # 用 numbering.xml 绑定 Heading1..9
+  allow_char_styles:         ["Emphasis","Strong","Code"]  # 允许的字符样式白名单
+  sections:
+    minimize_sections: true
+    enforce_title_first_page_diff: true # 封面“首页不同”
+    even_odd_headers: false             # 是否启用奇偶页不同
+
+page_setup:                    # ===== 页面级（settings.xml + sectPr）=====
+  paper:        { default: "A4", options: ["A4","A3","Letter"] }
+  orientation:  { default: "portrait" }
+  margins_cm:   { top: 2.5, bottom: 2.5, left: 2.8, right: 2.8, header: 1.5, footer: 1.75, gutter: 0 }
+  columns:      { count: 1 }           # 默认单栏
+  page_numbering:
+    position:   "footer"               # "header"|"footer"
+    format:     "decimal"              # 与字段输出有关（域可用）
+    start_at:   1
+    show_total: false                  # 是否显示 “第 x / y 页”
+  title_page:
+    separate_section: true
+    count_in_page_number: false        # 封面不计入页码
+  language:
+    document: "zh-CN"
+    proofing: "zh-CN"
+
+theme:                          # ===== 主题（theme1.xml）=====
+  colors:
+    text1: "#000000"
+    background1: "#FFFFFF"
+    accent1: "#3452FF"
+    accent2: "#00A6A6"
+    accent3: "#F39C12"
+    accent4: "#E74C3C"
+    accent5: "#8E44AD"
+    accent6: "#16A085"
+  fonts:
+    major:        # 标题
+      latin: "Times New Roman"
+      ea:    "仿宋_GB2312"
+    minor:        # 正文
+      latin: "Times New Roman"
+      ea:    "仿宋_GB2312"
+
+styles:                         # ===== 样式基线（styles.xml）=====
+  Normal:
+    type: "paragraph"
+    based_on: null
+    next: "Normal"
+    rPr:
+      eastAsia:   { default: "仿宋_GB2312", options_from: "catalog.font_families.chinese" }
+      ascii:      { default: "Times New Roman", options_from: "catalog.font_families.western" }
+      size_cn:    { default: "三号", mapping_from: "catalog.font_sizes_cn.mapping" }
+      bold:       false
+      italic:     false
+      color:      { theme: "text1" }
+      underline:  "none"
+    pPr:
+      alignment:  { default: "justify", options_from: "catalog.alignments.paragraph.options" }
+      line_spacing: { default: { rule: "1.5" }, options_from: "catalog.line_spacing.options" }
+      space_before_pt: 0
+      space_after_pt: 0
+      indent:
+        first_line: { default: { type: "chars", value: 2 }, options_from: "catalog.indent.first_line.options" }
+        left_cm:    0
+        right_cm:   0
+      outline_level: null
+
+  Title:
+    type: "paragraph"
+    based_on: "Normal"
+    rPr:
+      size_cn: "小二"           # 18pt
+      bold: true
+      color: { theme: "text1" }
+    pPr:
+      alignment: "center"
+      line_spacing: { rule: "exact", value_pt: 31 }
+      space_before_pt: 0
+      space_after_pt: 12
+      indent: { first_line: { type: "none", value: 0 }, left_cm: 0, right_cm: 0 }
+
+  Heading1:
+    type: "paragraph"
+    based_on: "Normal"
+    link_char_style: "Heading1Char"
+    rPr:
+      size_cn: "三号"           # 16pt
+      bold: true
+    pPr:
+      alignment: "justify"
+      line_spacing: { rule: "double" }
+      indent: { first_line: { type: "chars", value: 2 }, left_cm: 0, right_cm: 0 }
+      outline_level: 0
+      keep_next: true
+
+  Heading2:
+    type: "paragraph"
+    based_on: "Normal"
+    link_char_style: "Heading2Char"
+    rPr:
+      size_cn: "三号"
+      bold: false
+    pPr:
+      alignment: "justify"
+      line_spacing: { rule: "double" }
+      indent: { first_line: { type: "chars", value: 2 }, left_cm: 0, right_cm: 0 }
+      outline_level: 1
+      keep_next: true
+
+  Heading3:
+    type: "paragraph"
+    based_on: "Normal"
+    rPr:
+      size_cn: "小三"           # 15pt
+      bold: false
+    pPr:
+      alignment: "justify"
+      line_spacing: { rule: "1.5" }
+      indent: { first_line: { type: "chars", value: 2 }, left_cm: 0, right_cm: 0 }
+      outline_level: 2
+
+  Caption:                      # 图表题注
+    type: "paragraph"
+    based_on: "Normal"
+    rPr:
+      size_cn: "小四"           # 12pt
+      bold: false
+    pPr:
+      alignment: "center"
+      space_before_pt: 6
+      space_after_pt: 6
+
+  TOC1:                         # 目录层级示例
+    type: "paragraph"
+    based_on: "Normal"
+    rPr:
+      size_cn: "小四"
+    pPr:
+      tabs: [{ pos_cm: 16, leader: "dot", align: "right" }]
+      indent: { first_line: { type: "none", value: 0 }, left_cm: 0, right_cm: 0 }
+  TOC2:
+    type: "paragraph"
+    based_on: "TOC1"
+    pPr:
+      indent: { first_line: { type: "none", value: 0 }, left_cm: 0.74, right_cm: 0 }
+
+tables:                        # ===== 表格统一策略（document.xml: w:tblPr）=====
+  default_style: "TableGrid"
+  width_mode: "auto"           # "auto" | "fixed" | "fit_window"
+  alignment: { default: "center", options_from: "catalog.alignments.table.options" }
+  header_row_repeat: true
+  row_cant_split: true
+  cell_margins_cm: { top: 0.1, bottom: 0.1, left: 0.15, right: 0.15 }
+  borders:
+    apply: true
+    color: { theme: "text1" }
+    width_pt: 0.5
+
+numbering:                     # ===== 多级编号（numbering.xml）=====
+  preset: "decimal-dot"        # 引用 catalog.numbering_styles
+  bind_headings:               # 绑定样式到级别
+    level1: "Heading1"
+    level2: "Heading2"
+    level3: "Heading3"
+  start_at:
+    level1: 1
+    level2: 1
+    level3: 1
+  indent:
+    level1: { hanging_chars: 2 }   # 悬挂缩进（编号占位）
+    level2: { hanging_chars: 2 }
+    level3: { hanging_chars: 2 }
+  restart_per_level: false
+
+headers_footers:               # ===== 页眉页脚（headerX/footerX.xml）=====
+  header:
+    use_different_first_page: true
+    use_different_even_odd:   false
+    text_style: "Normal"
+    components:
+      - { type: "text", value: "公司名称", align: "left" }
+      - { type: "text", value: "文档名称", align: "center" }
+  footer:
+    page_number:
+      position: "center"       # left|center|right
+      pattern: "PAGE"          # "PAGE" 或 "第 PAGE 页" / "第 PAGE / NUMPAGES 页"
+      show_total: false
+      style: "Normal"
+
+validation:                    # ===== 校验规则（审计用）=====
+  forbid_direct_run_props:
+    color: false
+    size:  false
+    fonts: false
+  enforce_paragraph_styles:
+    headings_must_use: ["Heading1","Heading2","Heading3"]
+    body_must_use: ["Normal"]
+  toc:
+    must_exist: true
+    levels: [1,2,3]
+    update_required: true      # 打开文档后需更新域
+  sections:
+    max_count: 6               # 防止大量无意义分节
+    required:
+      - { name: "cover", first_page_different: true }
+      - { name: "body",  page_number_from: 1 }
