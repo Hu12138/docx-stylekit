@@ -1,0 +1,609 @@
+theme:
+  colors:
+    dk2: '#44546A'
+    lt2: '#E7E6E6'
+    accent1: '#4874CB'
+    accent2: '#EE822F'
+    accent3: '#F2BA02'
+    accent4: '#75BD42'
+    accent5: '#30C0B4'
+    accent6: '#E54C5E'
+    hlink: '#0026E5'
+    folHlink: '#7E1FAD'
+  fonts:
+    major:
+      latin: Calibri Light
+      ea: ''
+    minor:
+      latin: Calibri
+      ea: ''
+styles:
+  paragraph_styles:
+    '1':
+      name: Normal
+      based_on: null
+      link_char_style: null
+      rPr:
+        eastAsia: FangSong_GB2312
+        ascii: Times New Roman
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 16.0
+        size_cn: 三号
+        color: null
+      pPr:
+        alignment: both
+        line:
+          rule: exact
+          value_pt: 28.0
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line:
+            type: chars
+            value: 2.0
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: null
+        keep_next: false
+    '2':
+      name: heading 1
+      based_on: '1'
+      link_char_style: '14'
+      rPr:
+        eastAsia: 黑体
+        ascii: null
+        bold: true
+        italic: false
+        underline: none
+        size_pt: null
+        size_cn: null
+        color: null
+      pPr:
+        alignment: left
+        line:
+          rule: exact
+          value_pt: 28.0
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line:
+            type: chars
+            value: 0.0
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: 0
+        keep_next: true
+    '3':
+      name: heading 2
+      based_on: '2'
+      link_char_style: '17'
+      rPr:
+        eastAsia: KaiTi_GB2312
+        ascii: Cambria
+        bold: false
+        italic: false
+        underline: none
+        size_pt: null
+        size_cn: null
+        color: null
+      pPr:
+        alignment: left
+        line:
+          rule: exact
+          value_pt: 28.0
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: 1
+        keep_next: true
+    '4':
+      name: heading 3
+      based_on: '1'
+      link_char_style: '18'
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: null
+        size_cn: null
+        color: null
+      pPr:
+        alignment: null
+        line:
+          rule: exact
+          value_pt: 28.0
+        space_before_pt: 13.0
+        space_after_pt: 13.0
+        indent:
+          first_line:
+            type: chars
+            value: 0.0
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: 2
+        keep_next: true
+    '5':
+      name: heading 4
+      based_on: '1'
+      link_char_style: '19'
+      rPr:
+        eastAsia: null
+        ascii: Cambria
+        bold: true
+        italic: false
+        underline: none
+        size_pt: 16.0
+        size_cn: 三号
+        color: null
+      pPr:
+        alignment: null
+        line: null
+        space_before_pt: 0
+        space_after_pt: 0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: 3
+        keep_next: true
+    '6':
+      name: heading 5
+      based_on: '1'
+      link_char_style: null
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: true
+        italic: false
+        underline: none
+        size_pt: 14.0
+        size_cn: 四号
+        color: null
+      pPr:
+        alignment: null
+        line:
+          rule: auto
+        space_before_pt: 14.0
+        space_after_pt: 14.5
+        indent:
+          first_line:
+            type: cm
+            value: 0.71
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: 4
+        keep_next: true
+    '7':
+      name: heading 6
+      based_on: '1'
+      link_char_style: null
+      rPr:
+        eastAsia: 黑体
+        ascii: Arial
+        bold: true
+        italic: false
+        underline: none
+        size_pt: 12.0
+        size_cn: 小四
+        color: null
+      pPr:
+        alignment: null
+        line:
+          rule: auto
+        space_before_pt: 12.0
+        space_after_pt: 3.2
+        indent:
+          first_line:
+            type: cm
+            value: 0.71
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: 5
+        keep_next: true
+    '8':
+      name: heading 7
+      based_on: '1'
+      link_char_style: null
+      rPr:
+        eastAsia: null
+        ascii: null
+        bold: true
+        italic: false
+        underline: none
+        size_pt: 12.0
+        size_cn: 小四
+        color: null
+      pPr:
+        alignment: null
+        line:
+          rule: auto
+        space_before_pt: 12.0
+        space_after_pt: 3.2
+        indent:
+          first_line:
+            type: cm
+            value: 0.71
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: 6
+        keep_next: true
+    '9':
+      name: heading 8
+      based_on: '1'
+      link_char_style: null
+      rPr:
+        eastAsia: 黑体
+        ascii: Arial
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 12.0
+        size_cn: 小四
+        color: null
+      pPr:
+        alignment: null
+        line:
+          rule: auto
+        space_before_pt: 12.0
+        space_after_pt: 3.2
+        indent:
+          first_line:
+            type: cm
+            value: 0.71
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: 7
+        keep_next: true
+    '10':
+      name: heading 9
+      based_on: '1'
+      link_char_style: null
+      rPr:
+        eastAsia: 黑体
+        ascii: Arial
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 10.5
+        size_cn: 五号
+        color: null
+      pPr:
+        alignment: null
+        line:
+          rule: auto
+        space_before_pt: 12.0
+        space_after_pt: 3.2
+        indent:
+          first_line:
+            type: cm
+            value: 0.71
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: 8
+        keep_next: true
+    '11':
+      name: Body Text
+      based_on: '1'
+      link_char_style: null
+      rPr: {}
+      pPr:
+        alignment: null
+        line:
+          rule: single
+        space_before_pt: 0
+        space_after_pt: 6.0
+        indent:
+          first_line: null
+          left_cm: 0
+          right_cm: 0
+        outline_level: null
+        keep_next: false
+    '15':
+      name: 大标题
+      based_on: null
+      link_char_style: null
+      rPr:
+        eastAsia: FZXiaoBiaoSong-B05
+        ascii: 黑体
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 22.0
+        size_cn: 二号
+        color:
+          hex: '#000000'
+      pPr:
+        alignment: both
+        line:
+          rule: exact
+          value_pt: 32.0
+        space_before_pt: 6.0
+        space_after_pt: 6.0
+        indent:
+          first_line:
+            type: chars
+            value: 0.0
+          left_cm: 0.56
+          right_cm: 0.0
+        outline_level: 9
+        keep_next: false
+    '16':
+      name: 正文文字
+      based_on: '1'
+      link_char_style: null
+      rPr:
+        eastAsia: FangSong_GB2312
+        ascii: Arial
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 16.0
+        size_cn: 三号
+        color: null
+      pPr:
+        alignment: null
+        line:
+          rule: exact
+          value_pt: 28.0
+        space_before_pt: 2.5
+        space_after_pt: 0
+        indent:
+          first_line:
+            type: chars
+            value: 2.0
+          left_cm: 0.0
+          right_cm: 0.0
+        outline_level: null
+        keep_next: false
+  character_styles:
+    '13':
+      name: Default Paragraph Font
+      based_on: null
+      link_char_style: null
+      rPr: {}
+      pPr: {}
+    '14':
+      name: Heading 1 Char
+      based_on: '13'
+      link_char_style: '2'
+      rPr:
+        eastAsia: 黑体
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 16.0
+        size_cn: 三号
+        color:
+          hex: '#2E54A1'
+      pPr: {}
+    '17':
+      name: 标题 2 字符
+      based_on: null
+      link_char_style: '3'
+      rPr:
+        eastAsia: KaiTi_GB2312
+        ascii: Cambria
+        bold: true
+        italic: false
+        underline: none
+        size_pt: 16.0
+        size_cn: 三号
+        color: null
+      pPr: {}
+    '18':
+      name: 标题 3 字符
+      based_on: null
+      link_char_style: '4'
+      rPr:
+        eastAsia: FangSong_GB2312
+        ascii: null
+        bold: false
+        italic: false
+        underline: none
+        size_pt: 16.0
+        size_cn: 三号
+        color: null
+      pPr: {}
+    '19':
+      name: 标题 4 字符
+      based_on: null
+      link_char_style: '5'
+      rPr:
+        eastAsia: FangSong_GB2312
+        ascii: Cambria
+        bold: true
+        italic: false
+        underline: none
+        size_pt: 16.0
+        size_cn: 三号
+        color: null
+      pPr: {}
+  table_styles:
+    '12':
+      name: Normal Table
+      based_on: null
+      link_char_style: null
+      rPr: {}
+      pPr: {}
+  doc_defaults:
+    rPr:
+      eastAsia: null
+      ascii: null
+      bold: false
+      italic: false
+      underline: none
+      size_pt: null
+      size_cn: null
+      color: null
+    pPr: {}
+numbering:
+  abstract:
+    '0':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1.'
+          pStyle: '2'
+        1:
+          fmt: decimal
+          text: '%1.%2.'
+          pStyle: '3'
+        2:
+          fmt: decimal
+          text: '%1.%2.%3.'
+          pStyle: '4'
+        3:
+          fmt: decimal
+          text: '%1.%2.%3.%4.'
+          pStyle: null
+        4:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.'
+          pStyle: null
+        5:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.'
+          pStyle: null
+        7:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.%8.'
+          pStyle: null
+        8:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.%8.%9.'
+          pStyle: null
+    '1':
+      levels:
+        0:
+          fmt: decimal
+          text: '%1.'
+          pStyle: null
+        1:
+          fmt: decimal
+          text: '%1.%2.'
+          pStyle: null
+        2:
+          fmt: decimal
+          text: '%1.%2.%3.'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: '%1.%2.%3.%4.'
+          pStyle: '5'
+        4:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.'
+          pStyle: null
+        5:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6'
+          pStyle: null
+        6:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7'
+          pStyle: null
+        7:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.%8'
+          pStyle: null
+        8:
+          fmt: decimal
+          text: '%1.%2.%3.%4.%5.%6.%7.%8.%9'
+          pStyle: null
+    '2':
+      levels:
+        0:
+          fmt: chineseCounting
+          text: '%1、'
+          pStyle: null
+        1:
+          fmt: chineseCounting
+          text: （%2）
+          pStyle: null
+        2:
+          fmt: decimal
+          text: '%3．'
+          pStyle: null
+        3:
+          fmt: decimal
+          text: （%4）
+          pStyle: null
+        4:
+          fmt: decimalEnclosedCircleChinese
+          text: '%5'
+          pStyle: '6'
+        5:
+          fmt: decimal
+          text: '%6）'
+          pStyle: '7'
+        6:
+          fmt: lowerLetter
+          text: '%7．'
+          pStyle: '8'
+        7:
+          fmt: lowerLetter
+          text: '%8）'
+          pStyle: '9'
+        8:
+          fmt: lowerRoman
+          text: '%9 '
+          pStyle: '10'
+  nums:
+    '1': '0'
+    '2': '1'
+    '3': '2'
+page_setup:
+  sections:
+  - pgSz:
+      w_cm: 21.0
+      h_cm: 29.7
+      orient: portrait
+    pgMar:
+      top: 2.54
+      bottom: 2.54
+      left: 3.17
+      right: 3.17
+      header: 1.5
+      footer: 1.75
+      gutter: 0.0
+    titlePg: false
+    pgNumStart: null
+    headerRefs: []
+    footerRefs: []
+headers_footers:
+  headers: {}
+  footers: {}
+rels_document:
+  rId7:
+    type: http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable
+    target: fontTable.xml
+  rId6:
+    type: http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering
+    target: numbering.xml
+  rId5:
+    type: http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme
+    target: theme/theme1.xml
+  rId4:
+    type: http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes
+    target: endnotes.xml
+  rId3:
+    type: http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes
+    target: footnotes.xml
+  rId2:
+    type: http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings
+    target: settings.xml
+  rId1:
+    type: http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles
+    target: styles.xml

@@ -85,3 +85,19 @@ def diff(left_yaml, right_yaml, fmt):
     b = load_yaml(right_yaml)
     diffs = dict_diff(a, b)
     print_diff_report(diffs, fmt=fmt)
+
+import json
+from .render.json_template import expand_document
+from .writer.docx_writer import render_to_docx
+
+@main.command()
+@click.argument("json_template", type=click.Path(exists=True))
+@click.option("--template", "-t", type=click.Path(exists=True), required=True, help="样式模板DOCX（包含企业样式/编号/页眉页脚）")
+@click.option("-o", "--output", type=click.Path(), default="output.docx", help="输出DOCX路径")
+def render(json_template, template, output):
+    """读取 JSON 模版（含内容与样式引用），渲染为 DOCX"""
+    with open(json_template, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    expanded = expand_document(data)
+    render_to_docx(expanded, template, output)
+    click.echo(Fore.GREEN + f"DOCX generated at: {output}" + Style.RESET_ALL)

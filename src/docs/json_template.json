@@ -1,0 +1,220 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DOCX 模版结构",
+  "type": "object",
+  "properties": {
+    "doc": {
+      "type": "object",
+      "properties": {
+        "meta": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "string" },
+            "lang": { "type": "string", "pattern": "^[a-z]{2}-[A-Z]{2}$" },
+            "version": { "type": "string" },
+            "createdAt": { "type": "string", "format": "date-time" }
+          },
+          "required": ["title", "lang", "version", "createdAt"]
+        },
+        "styleCatalog": {
+          "type": "object",
+          "properties": {
+            "paragraph": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "character": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "table": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          },
+          "required": ["paragraph", "character", "table"]
+        },
+        "pageSetup": {
+          "type": "object",
+          "properties": {
+            "paper": { "type": "string" },
+            "orientation": { "type": "string", "enum": ["portrait", "landscape"] },
+            "marginsCm": {
+              "type": "object",
+              "properties": {
+                "top": { "type": "number" },
+                "bottom": { "type": "number" },
+                "left": { "type": "number" },
+                "right": { "type": "number" },
+                "header": { "type": "number" },
+                "footer": { "type": "number" }
+              },
+              "required": ["top","bottom","left","right","header","footer"]
+            },
+            "titleFirstPageDifferent": { "type": "boolean" },
+            "evenOddDifferent": { "type": "boolean" },
+            "pageNumbering": {
+              "type": "object",
+              "properties": {
+                "position": { "type": "string", "enum": ["header","footer"] },
+                "startAt": { "type": "integer", "minimum": 1 },
+                "format": { "type": "string" }
+              },
+              "required": ["position","startAt","format"]
+            }
+          },
+          "required": ["paper","orientation","marginsCm","titleFirstPageDifferent","evenOddDifferent","pageNumbering"]
+        },
+        "numbering": {
+          "type": "object",
+          "properties": {
+            "bindHeadings": { "type": "boolean" },
+            "preset": { "type": "string" },
+            "levels": {
+              "type": "object",
+              "patternProperties": {
+                "^[1-9]$": {
+                  "type": "object",
+                  "properties": {
+                    "styleRef": { "type": "string" }
+                  },
+                  "required": ["styleRef"]
+                }
+              }
+            }
+          },
+          "required": ["bindHeadings","preset","levels"]
+        },
+        "toc": {
+          "type": "object",
+          "properties": {
+            "required": { "type": "boolean" },
+            "levels": {
+              "type": "array",
+              "items": { "type": "integer", "minimum": 1 }
+            },
+            "note": { "type": "string" }
+          },
+          "required": ["required","levels"]
+        },
+        "headersFooters": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "enum": ["text","pageNumber"] },
+                  "styleRef": { "type": "string" },
+                  "align": { "type": "string", "enum": ["left","center","right"] },
+                  "text": { "type": "string" },
+                  "pattern": { "type": "string" }
+                },
+                "required": ["type","styleRef","align"]
+              }
+            },
+            "footer": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "enum": ["text","pageNumber"] },
+                  "styleRef": { "type": "string" },
+                  "align": { "type": "string", "enum": ["left","center","right"] },
+                  "text": { "type": "string" },
+                  "pattern": { "type": "string" }
+                },
+                "required": ["type","styleRef","align"]
+              }
+            }
+          },
+          "required": ["header","footer"]
+        },
+        "variables": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "enum": ["paragraph","heading","list","table","figure","caption","pageBreak","conditional","repeat","variable"] },
+              "styleRef": { "type": "string" },
+              "level": { "type": "integer", "minimum": 1 },
+              "text": { "type": "string" },
+              "pageBreakBefore": { "type": "boolean" },
+              "runs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": { "type": "string" },
+                    "charStyleRef": { "type": "string" }
+                  },
+                  "required": ["text"]
+                }
+              },
+              "ordered": { "type": "boolean" },
+              "items": {
+                "type": "array",
+                "items": { "$ref": "#/properties/doc/properties/blocks/items" }
+              },
+              "columns": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "widthPct": { "type": "number" },
+                    "align": { "type": "string", "enum": ["left","center","right"] }
+                  },
+                  "required": ["widthPct","align"]
+                }
+              },
+              "header": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": { "$ref": "#/properties/doc/properties/blocks/items" }
+                }
+              },
+              "rows": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": { "$ref": "#/properties/doc/properties/blocks/items" }
+                }
+              },
+              "for": { "type": "string" },
+              "as": { "type": "string" },
+              "template": {
+                "type": "array",
+                "items": { "$ref": "#/properties/doc/properties/blocks/items" }
+              }
+            },
+            "required": ["type"]
+          }
+        },
+        "constraints": {
+          "type": "object",
+          "properties": {
+            "forbidDirectFormatting": { "type": "boolean" },
+            "allowedParagraphStyles": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "allowedCharacterStyles": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "maxHeadingLevel": { "type": "integer", "minimum": 1 },
+            "noManualNumbersForHeadings": { "type": "boolean" }
+          }
+        }
+      },
+      "required": ["meta","styleCatalog","pageSetup","numbering","blocks"]
+    }
+  },
+  "required": ["doc"]
+}
