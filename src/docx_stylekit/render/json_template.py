@@ -20,14 +20,22 @@ def substitute_text(text: str, vars_dict: dict) -> str:
         return "" if val is None else str(val)
     return _VAR_PATTERN.sub(repl, text or "")
 
+def _merge_vars(base: dict, override: dict) -> dict:
+    if not override:
+        return dict(base or {})
+    out = dict(base or {})
+    out.update(override or {})
+    return out
+
 def expand_blocks(blocks: list, vars_dict: dict) -> list:
     """
-    输入含有 repeat/conditional/variable 的 blocks，
-    输出为“纯内容块”列表（仅 paragraph/heading/list/table/caption/pageBreak 等）。
+    展开 repeat / conditional / variable 的变量替换。
+    保留 useTemplate（由 writer 在渲染时处理），但合并其 variables。
     """
     out = []
     for b in blocks or []:
         btype = b.get("type")
+        # 控制块：repeat
         if btype == "repeat":
             arr = _get_var(vars_dict, b.get("for", ""))
             as_name = b.get("as", "item")
@@ -37,6 +45,8 @@ def expand_blocks(blocks: list, vars_dict: dict) -> list:
                     local_vars = {**vars_dict, as_name: item}
                     out.extend(expand_blocks(template, local_vars))
             continue
+
+        # 控制块：conditional
         if btype == "conditional":
             cond_key = b.get("if")
             truthy = False
@@ -48,8 +58,9 @@ def expand_blocks(blocks: list, vars_dict: dict) -> list:
             branch = b.get("then", []) if truthy else b.get("else", [])
             out.extend(expand_blocks(branch, vars_dict))
             continue
+
+        # 语法糖：variable → paragraph
         if btype == "variable":
-            # 单变量段：转 paragraph
             text = substitute_text(b.get("text", ""), vars_dict)
             out.append({
                 "type": "paragraph",
@@ -58,15 +69,23 @@ def expand_blocks(blocks: list, vars_dict: dict) -> list:
             })
             continue
 
+        # useTemplate：仅合并 variables；交由 writer 执行新建 section + 渲染 blocks
+        if "useTemplate" in b:
+            nb = deepcopy(b)
+            nb["variables"] = _merge_vars(vars_dict, b.get("variables") or {})
+            out.append(nb)
+            continue
+
+        # 普通块的文本替换
         nb = deepcopy(b)
-        # 段落 runs/标题 text/列表 items/table 单元内文本做变量替换
         if "text" in nb:
             nb["text"] = substitute_text(nb.get("text", ""), vars_dict)
         if "runs" in nb and isinstance(nb["runs"], list):
             for r in nb["runs"]:
                 r["text"] = substitute_text(r.get("text", ""), vars_dict)
+
+        # 列表项 runs 替换
         if btype == "list":
-            # 展开 items 内的 runs
             items = []
             for it in nb.get("items", []):
                 eit = deepcopy(it)
@@ -75,8 +94,9 @@ def expand_blocks(blocks: list, vars_dict: dict) -> list:
                         r["text"] = substitute_text(r.get("text", ""), vars_dict)
                 items.append(eit)
             nb["items"] = items
+
+        # 表格 cell.blocks 递归替换
         if btype == "table":
-            # header/rows: 每个 cell.blocks 递归处理
             def _proc_rows(rows):
                 out_rows = []
                 for row in rows or []:
@@ -88,9 +108,7 @@ def expand_blocks(blocks: list, vars_dict: dict) -> list:
                     out_rows.append(out_row)
                 return out_rows
             nb["header"] = _proc_rows(nb.get("header", []))
-            # rows 可能含 repeat 模式：兼容 expand_blocks 之前的 repeat 设计
             if isinstance(nb.get("rows"), dict) and "repeat" in nb["rows"]:
-                # { "repeat": { "for": "ARR", "as": "item", "template": [ row, ... ] } }
                 repeat = nb["rows"]["repeat"]
                 arr = _get_var(vars_dict, repeat.get("for", ""))
                 as_name = repeat.get("as", "item")
@@ -99,7 +117,6 @@ def expand_blocks(blocks: list, vars_dict: dict) -> list:
                 if isinstance(arr, list):
                     for item in arr:
                         local_vars = {**vars_dict, as_name: item}
-                        # template 是一组行，每行是一组 cell
                         for tpl_row in tpl:
                             rrow = []
                             for cell in tpl_row:

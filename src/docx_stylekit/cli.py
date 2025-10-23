@@ -85,19 +85,43 @@ def diff(left_yaml, right_yaml, fmt):
     b = load_yaml(right_yaml)
     diffs = dict_diff(a, b)
     print_diff_report(diffs, fmt=fmt)
-
+# src/docx_stylekit/cli.py（节选，新增/更新 render）
 import json
+import click
+import yaml
+from colorama import Fore, Style
 from .render.json_template import expand_document
 from .writer.docx_writer import render_to_docx
 
 @main.command()
 @click.argument("json_template", type=click.Path(exists=True))
-@click.option("--template", "-t", type=click.Path(exists=True), required=True, help="样式模板DOCX（包含企业样式/编号/页眉页脚）")
-@click.option("-o", "--output", type=click.Path(), default="output.docx", help="输出DOCX路径")
-def render(json_template, template, output):
-    """读取 JSON 模版（含内容与样式引用），渲染为 DOCX"""
+@click.option("--template", "-t", type=click.Path(exists=True), required=True,
+              help="样式模板 DOCX（含企业样式/编号/页眉页脚）")
+@click.option("--styles", "-s", type=click.Path(exists=False), required=False,
+              help="合并后的 YAML（merged.yaml）。可选，用于校验/对照。")
+@click.option("-o", "--output", type=click.Path(), default="output.docx", help="输出 DOCX 路径")
+@click.option("--prefer-json-styles/--no-prefer-json-styles", default=False, help="允许 JSON 覆盖同名 YAML 样式字段")
+@click.option("--fail-on-unknown-style/--no-fail-on-unknown-style", default=True, help="未知样式是否直接失败（默认 true）")
+def render(json_template, template, styles, output, prefer_json_styles, fail_on_unknown_style):
+    """读取 JSON 模版（含内容+内联样式+页面模板），渲染为 DOCX"""
     with open(json_template, "r", encoding="utf-8") as f:
         data = json.load(f)
     expanded = expand_document(data)
-    render_to_docx(expanded, template, output)
+    styles_yaml = None
+    if styles:
+        if styles.endswith((".yml", ".yaml")):
+            with open(styles, "r", encoding="utf-8") as yf:
+                styles_yaml = yaml.safe_load(yf)
+        else:
+            styles_yaml = styles  # 允许传路径或 dict（高级用法）
+
+    render_to_docx(
+        expanded,
+        template_docx_path=template,
+        styles_yaml=styles_yaml,
+        output_path=output,
+        prefer_json_styles=prefer_json_styles,
+        fail_on_unknown_style=fail_on_unknown_style,
+    )
     click.echo(Fore.GREEN + f"DOCX generated at: {output}" + Style.RESET_ALL)
+

@@ -1,0 +1,23 @@
+你可以在 doc.stylesInline 中新增或补充样式定义，但字段只能使用：
+
+type（paragraph/character/table）
+
+basedOn（可引用 YAML 内已有样式名或 Normal）
+
+font.{eastAsia,ascii,sizePt,bold,italic,color}
+
+paragraph.{align,lineSpacingMultiple,spaceBeforePt,spaceAfterPt,firstLineChars,hangingChars,outlineLevel}
+
+可选 numbering.{link,level}
+
+允许在 doc.pageTemplates 中定义 cover_page/abstract_page/toc_page/references_page/...，每个模板包含 layout 与 blocks。
+
+生成正文内容时：
+
+优先引用 YAML 中已有样式名作为 styleRef（如 Heading 1、正文文字）；
+
+YAML 无该样式时，再在 stylesInline 定义并使用。
+
+不要在段落文字中描述字体/字号（如“加粗”“三号字”），只能通过样式定义表达。
+
+若你要覆盖 YAML 的样式属性，必须在该样式的 JSON 定义中加 "$override": true，否则无效。
