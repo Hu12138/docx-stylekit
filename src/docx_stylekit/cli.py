@@ -1,4 +1,7 @@
+import json
 import click
+import yaml
+from importlib import resources
 from colorama import Fore, Style
 from .io.docx_zip import DocxZip
 from .io.rels import parse_document_rels
@@ -13,6 +16,7 @@ from .merge.merger import merge_enterprise_with_observed
 from .diff.differ import dict_diff
 from .emit.report import print_diff_report
 from .utils.io import load_yaml, dump_yaml
+from .utils.dicts import deep_merge
 
 @click.group()
 def main():
@@ -86,17 +90,13 @@ def diff(left_yaml, right_yaml, fmt):
     diffs = dict_diff(a, b)
     print_diff_report(diffs, fmt=fmt)
 # src/docx_stylekit/cli.py（节选，新增/更新 render）
-import json
-import click
-import yaml
-from colorama import Fore, Style
 from .render.json_template import expand_document
 from .writer.docx_writer import render_to_docx
 
 @main.command()
 @click.argument("json_template", type=click.Path(exists=True))
-@click.option("--template", "-t", type=click.Path(exists=True), required=True,
-              help="样式模板 DOCX（含企业样式/编号/页眉页脚）")
+@click.option("--template", "-t", type=click.Path(exists=True), required=False,
+              help="样式模板 DOCX（包含企业样式/编号/页眉页脚）。若省略，则使用内置默认模板。")
 @click.option("--styles", "-s", type=click.Path(exists=False), required=False,
               help="合并后的 YAML（merged.yaml）。可选，用于校验/对照。")
 @click.option("-o", "--output", type=click.Path(), default="output.docx", help="输出 DOCX 路径")
@@ -106,6 +106,19 @@ def render(json_template, template, styles, output, prefer_json_styles, fail_on_
     """读取 JSON 模版（含内容+内联样式+页面模板），渲染为 DOCX"""
     with open(json_template, "r", encoding="utf-8") as f:
         data = json.load(f)
+
+    template_docx_path = template
+    default_profile = {}
+    if not template:
+        try:
+            default_profile_path = resources.files("docx_stylekit.data").joinpath("default_render_template.yaml")
+            with resources.as_file(default_profile_path) as p:
+                default_profile = load_yaml(p)
+        except (FileNotFoundError, ModuleNotFoundError):
+            default_profile = {}
+        if default_profile:
+            data = deep_merge(default_profile, data)
+
     expanded = expand_document(data)
     styles_yaml = None
     if styles:
@@ -117,11 +130,10 @@ def render(json_template, template, styles, output, prefer_json_styles, fail_on_
 
     render_to_docx(
         expanded,
-        template_docx_path=template,
+        template_docx_path=template_docx_path,
         styles_yaml=styles_yaml,
         output_path=output,
         prefer_json_styles=prefer_json_styles,
         fail_on_unknown_style=fail_on_unknown_style,
     )
     click.echo(Fore.GREEN + f"DOCX generated at: {output}" + Style.RESET_ALL)
-

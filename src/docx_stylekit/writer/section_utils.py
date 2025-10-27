@@ -32,7 +32,10 @@ def apply_section_layout(section, layout: dict):
 
     # 页码起始/格式：由页眉页脚域与 settings/sectPr 配合，这里仅设置 startAt（可选）
     if layout.get("startAt") is not None:
-        pg_num_type = section._sectPr.get_or_add_pgNumType()
+        pg_num_type = section._sectPr.find(qn('w:pgNumType'))
+        if pg_num_type is None:
+            pg_num_type = OxmlElement('w:pgNumType')
+            section._sectPr.append(pg_num_type)
         pg_num_type.set(qn('w:start'), str(int(layout["startAt"])))
 
     # 垂直对齐（vAlign）

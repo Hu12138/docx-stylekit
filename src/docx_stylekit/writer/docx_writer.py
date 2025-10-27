@@ -1,11 +1,15 @@
-# src/docx_stylekit/writer/docx_writer.py
+import os
 import json
+import yaml
+from typing import Optional
 from docx import Document
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import RGBColor
+from docx.enum.table import WD_TABLE_ALIGNMENT, WD_ALIGN_VERTICAL
 from .style_store import StyleResolver
 from .section_utils import apply_section_layout, add_page_number_field, add_toc_field
+from ..utils.dicts import deep_merge
 
 def _clear_cell(cell):
     while cell._tc.getchildren():
@@ -46,6 +50,21 @@ def _set_cell_border(cell, border: dict):
         if "size" in cfg:
             el.set(qn('w:sz'), str(int(cfg["size"])))
 
+def _apply_cell_vertical_align(cell, align):
+    if not align:
+        return
+    key = str(align).lower()
+    mapping = {
+        "top": WD_ALIGN_VERTICAL.TOP,
+        "center": WD_ALIGN_VERTICAL.CENTER,
+        "middle": WD_ALIGN_VERTICAL.CENTER,
+        "bottom": WD_ALIGN_VERTICAL.BOTTOM,
+        "both": WD_ALIGN_VERTICAL.BOTH if hasattr(WD_ALIGN_VERTICAL, "BOTH") else None,
+    }
+    val = mapping.get(key)
+    if val is not None:
+        cell.vertical_alignment = val
+
 def _apply_table_format(table, fmt: dict):
     if not fmt:
         return
@@ -54,6 +73,7 @@ def _apply_table_format(table, fmt: dict):
         for cell in table.rows[0].cells:
             _set_cell_shading(cell, header_cfg.get("fill"))
             _set_cell_border(cell, header_cfg.get("border"))
+            _apply_cell_vertical_align(cell, header_cfg.get("verticalAlign"))
             for p in cell.paragraphs:
                 for run in p.runs:
                     font = run.font
@@ -68,6 +88,7 @@ def _apply_table_format(table, fmt: dict):
             if idx % 2 == 1 and alt_cfg:
                 for cell in row.cells:
                     _set_cell_shading(cell, alt_cfg.get("fill"))
+                    _apply_cell_vertical_align(cell, alt_cfg.get("verticalAlign"))
     table_border = fmt.get("tableBorder")
     if table_border:
         tbl = table._tbl
@@ -92,6 +113,64 @@ def _apply_table_format(table, fmt: dict):
                 el.set(qn('w:color'), cfg["color"].lstrip("#").upper())
             if "size" in cfg:
                 el.set(qn('w:sz'), str(int(cfg["size"])))
+    body_cfg = fmt.get("cell") or fmt.get("body")
+    if body_cfg:
+        has_header = bool(header_cfg) and len(table.rows) > 0
+        start_idx = 1 if has_header else 0
+        for row in table.rows[start_idx:]:
+            for cell in row.cells:
+                _apply_cell_vertical_align(cell, body_cfg.get("verticalAlign"))
+
+def _set_table_widths(table, columns_cfg, section):
+    if not columns_cfg or section is None:
+        return
+    try:
+        usable = section.page_width - section.left_margin - section.right_margin
+    except AttributeError:
+        return
+    if usable <= 0:
+        return
+    widths_pct = []
+    unspecified = []
+    for idx, col_cfg in enumerate(columns_cfg):
+        pct = col_cfg.get("widthPct") if isinstance(col_cfg, dict) else None
+        if isinstance(pct, (int, float)) and pct > 0:
+            widths_pct.append(float(pct))
+        else:
+            widths_pct.append(None)
+            unspecified.append(idx)
+    specified_total = sum(p for p in widths_pct if p is not None)
+    remaining = max(0.0, 100.0 - specified_total)
+    default_pct = remaining / len(unspecified) if unspecified else 0.0
+    for idx in unspecified:
+        widths_pct[idx] = default_pct
+    total_pct = sum(widths_pct)
+    if total_pct <= 0:
+        return
+    scale = 100.0 / total_pct
+    widths_pct = [p * scale for p in widths_pct]
+    table.autofit = False
+    if hasattr(table, "allow_autofit"):
+        table.allow_autofit = False
+    tbl = table._tbl
+    tbl_pr = tbl.tblPr
+    if tbl_pr is None:
+        tbl_pr = OxmlElement('w:tblPr')
+        tbl.append(tbl_pr)
+    tblW = tbl_pr.find(qn('w:tblW'))
+    if tblW is None:
+        tblW = OxmlElement('w:tblW')
+        tbl_pr.insert(0, tblW)
+    tblW.set(qn('w:w'), str(int(usable)))
+    tblW.set(qn('w:type'), 'dxa')
+    for col_idx, pct in enumerate(widths_pct):
+        col_width = int(round(usable * pct / 100.0))
+        if col_idx >= len(table.columns):
+            break
+        table.columns[col_idx].width = col_width
+        for cell in table.columns[col_idx].cells:
+            cell.width = col_width
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
 
 def _write_cell_blocks(cell, blocks, resolver: StyleResolver):
     _clear_cell(cell)
@@ -114,7 +193,13 @@ def _write_cell_blocks(cell, blocks, resolver: StyleResolver):
             p = cell.add_paragraph(style=st.name if st else None)
             p.add_run(b.get("text", ""))
 
-def write_blocks(doc: Document, blocks: list, resolver: StyleResolver, fail_on_unknown_style: bool = True):
+def write_blocks(
+    doc: Document,
+    blocks: list,
+    resolver: StyleResolver,
+    fail_on_unknown_style: bool = True,
+    table_defaults: Optional[dict] = None,
+):
     for b in blocks or []:
         # 页面模板调用：新建节 + 应用布局 + 渲染模板内部 blocks
         if "useTemplate" in b:
@@ -128,7 +213,13 @@ def write_blocks(doc: Document, blocks: list, resolver: StyleResolver, fail_on_u
             apply_section_layout(section, tpl.get("layout"))
             # 局部变量合并：已在 expand_document 合并到 b["variables"]，此处仅透传
             # 渲染模板 blocks
-            write_blocks(doc, tpl.get("blocks", []), resolver, fail_on_unknown_style)
+            write_blocks(
+                doc,
+                tpl.get("blocks", []),
+                resolver,
+                fail_on_unknown_style,
+                table_defaults=table_defaults,
+            )
             continue
 
         btype = b.get("type")
@@ -185,15 +276,24 @@ def write_blocks(doc: Document, blocks: list, resolver: StyleResolver, fail_on_u
             continue
 
         if btype == "table":
-            columns = b.get("columns", [])
-            ncols = max(1, len(columns))
+            defaults = table_defaults or {}
+            columns = b.get("columns") or defaults.get("columns", [])
+            if columns:
+                ncols = len(columns)
+            elif b.get("header"):
+                ncols = len(b["header"][0]) if b["header"] else 1
+            elif b.get("rows"):
+                ncols = len(b["rows"][0]) if b["rows"] else 1
+            else:
+                ncols = 1
             header = b.get("header", [])
             rows = b.get("rows", [])
             total_rows = len(header) + len(rows)
             if total_rows == 0:
                 total_rows = 1
             table = doc.add_table(rows=total_rows, cols=ncols)
-            tstyle = resolver.ensure_style(b.get("styleRef"), "table") if b.get("styleRef") else None
+            style_ref = b.get("styleRef") or defaults.get("styleRef")
+            tstyle = resolver.ensure_style(style_ref, "table") if style_ref else None
             if tstyle:
                 table.style = tstyle
             r_idx = 0
@@ -205,26 +305,24 @@ def write_blocks(doc: Document, blocks: list, resolver: StyleResolver, fail_on_u
                 for c_idx, cell in enumerate(drow):
                     _write_cell_blocks(table.cell(r_idx, c_idx), cell.get("blocks", []), resolver)
                 r_idx += 1
-            _apply_table_format(table, b.get("format"))
+            current_section = doc.sections[-1] if doc.sections else None
+            _set_table_widths(table, columns, current_section)
+            table_format = deep_merge(defaults.get("format", {}), b.get("format", {})) if defaults else b.get("format")
+            _apply_table_format(table, table_format)
             continue
 
         # 其它类型（figure 等）可按需扩展
 # src/docx_stylekit/writer/docx_writer.py （续）
-import os
-import json
-import yaml
-from .style_store import StyleResolver
-from .section_utils import apply_section_layout, add_page_number_field, add_toc_field
 
 def render_to_docx(template_json: dict,
-                   template_docx_path: str,
+                   template_docx_path: Optional[str] = None,
                    styles_yaml: dict = None,
                    output_path: str = "output.docx",
                    prefer_json_styles: bool = False,
                    fail_on_unknown_style: bool = True):
     """
     template_json: expand_document() 的结果（已展开变量/循环/条件；保留 useTemplate）
-    template_docx_path: 样式/编号/页眉页脚基础骨架（推荐提供）
+    template_docx_path: 样式/编号/页眉页脚基础骨架。可为空（使用内置空白文档）
     styles_yaml: 合并后的 YAML（dict）。如传入路径字符串则会自动读取。
     """
     doc_cfg = template_json.get("doc", {})
@@ -233,8 +331,11 @@ def render_to_docx(template_json: dict,
     page_templates = doc_cfg.get("pageTemplates", {}) or {}
     toc_levels = doc_cfg.get("toc", {}).get("levels", [1,3])
 
-    # 打开模板 DOCX
-    doc = Document(template_docx_path)
+    # 打开模板 DOCX（若未提供，则使用空白文档）
+    if template_docx_path:
+        doc = Document(template_docx_path)
+    else:
+        doc = Document()
     # 挂载配置供 writer 使用
     doc._page_templates_cfg = page_templates
     doc._toc_levels = toc_levels
@@ -255,7 +356,7 @@ def render_to_docx(template_json: dict,
     # YAML 样式库：此实现依赖模板 DOCX 自带样式；YAML 用于校验/提示（如需从 YAML 动态创建，可在此扩展）
     if isinstance(styles_yaml, str) and os.path.exists(styles_yaml):
         with open(styles_yaml, "r", encoding="utf-8") as f:
-            _ = yaml.safe_load(f)  # 预留：可用于验证 styleCatalog 白名单
+            _ = yaml.safe_load(f)
 
     # 构建解析器（支持 JSON 动态新增样式 & 受控覆盖）
     resolver = StyleResolver(doc, styles_inline, prefer_json_styles=prefer_json_styles)
@@ -264,7 +365,14 @@ def render_to_docx(template_json: dict,
     # 若需要固定在文档开头：可以在此插入；这里尊重 blocks 中的显式位置。
 
     # 内容写入
-    write_blocks(doc, doc_cfg.get("blocks", []), resolver, fail_on_unknown_style=fail_on_unknown_style)
+    table_defaults = doc_cfg.get("renderDefaults", {}).get("table", {})
+    write_blocks(
+        doc,
+        doc_cfg.get("blocks", []),
+        resolver,
+        fail_on_unknown_style=fail_on_unknown_style,
+        table_defaults=table_defaults,
+    )
 
     # 页眉页脚页码（若 JSON 指定 pageNumber 项，模板未内置时可插入）
     hf = doc_cfg.get("headersFooters", {})

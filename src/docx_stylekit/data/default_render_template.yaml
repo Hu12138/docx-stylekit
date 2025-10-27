@@ -1,0 +1,328 @@
+doc:
+  meta:
+    title: "Docx Stylekit Default"
+    lang: "zh-CN"
+    version: "1.0.0"
+    createdAt: "2024-05-25T00:00:00Z"
+  styleCatalog:
+    paragraph:
+      - Normal
+      - Heading 1
+      - Heading 2
+      - Heading 3
+      - Heading 4
+      - Heading 5
+      - Heading 6
+      - Heading 7
+      - Heading 8
+      - Heading 9
+      - TableBase
+      - TableCell
+      - TableHeaderCell
+    character:
+      - Default Paragraph Font
+      - Heading 1 Char
+      - Heading 2 Char
+      - Heading 3 Char
+      - Heading 4 Char
+      - Heading 5 Char
+    table:
+      - Normal Table
+      - InfoTable
+  stylesInline:
+    # 段落样式（复刻 sampleObserved 的核心设置）
+    Normal:
+      type: paragraph
+      $override: true
+      font:
+        eastAsia: FangSong_GB2312
+        ascii: Times New Roman
+        sizePt: 16
+      paragraph:
+        align: both
+        lineExactPt: 28
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        firstLineChars: 2
+        leftIndentCm: 0
+        rightIndentCm: 0
+    Heading 1:
+      type: paragraph
+      $override: true
+      font:
+        eastAsia: 黑体
+        bold: true
+      paragraph:
+        align: left
+        lineExactPt: 28
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        firstLineChars: 0
+        outlineLevel: 0
+        keepNext: true
+    Heading 2:
+      type: paragraph
+      $override: true
+      font:
+        eastAsia: KaiTi_GB2312
+        ascii: Cambria
+      paragraph:
+        align: left
+        lineExactPt: 28
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        firstLineChars: 0
+        outlineLevel: 1
+        keepNext: true
+    Heading 3:
+      type: paragraph
+      $override: true
+      font:
+        ascii: Cambria
+      paragraph:
+        align: left
+        lineExactPt: 28
+        spaceBeforePt: 13
+        spaceAfterPt: 13
+        firstLineChars: 0
+        outlineLevel: 2
+        keepNext: true
+    Heading 4:
+      type: paragraph
+      $override: true
+      font:
+        ascii: Cambria
+        bold: true
+        sizePt: 16
+      paragraph:
+        lineExactPt: 24
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        firstLineChars: 0
+        outlineLevel: 3
+        keepNext: true
+    Heading 5:
+      type: paragraph
+      $override: true
+      font:
+        eastAsia: 宋体
+        ascii: Cambria
+        bold: true
+        sizePt: 14
+      paragraph:
+        lineSpacingMultiple: 1.15
+        spaceBeforePt: 14
+        spaceAfterPt: 14
+        firstLineChars: 2
+        outlineLevel: 4
+        keepNext: true
+    Heading 6:
+      type: paragraph
+      $override: true
+      font:
+        eastAsia: 黑体
+        ascii: Arial
+        bold: true
+        sizePt: 12
+      paragraph:
+        lineSpacingMultiple: 1.15
+        spaceBeforePt: 12
+        spaceAfterPt: 12
+        firstLineChars: 0
+        outlineLevel: 5
+        keepNext: true
+    Heading 7:
+      type: paragraph
+      $override: true
+      font:
+        eastAsia: 黑体
+        ascii: Arial
+        bold: true
+        sizePt: 12
+      paragraph:
+        lineSpacingMultiple: 1.15
+        spaceBeforePt: 12
+        spaceAfterPt: 12
+        firstLineChars: 0
+        outlineLevel: 6
+        keepNext: true
+    Heading 8:
+      type: paragraph
+      $override: true
+      font:
+        eastAsia: 黑体
+        ascii: Arial
+        bold: true
+        sizePt: 12
+      paragraph:
+        lineSpacingMultiple: 1.15
+        spaceBeforePt: 12
+        spaceAfterPt: 12
+        firstLineChars: 0
+        outlineLevel: 7
+        keepNext: true
+    Heading 9:
+      type: paragraph
+      $override: true
+      font:
+        eastAsia: 黑体
+        ascii: Arial
+        bold: true
+        sizePt: 12
+      paragraph:
+        lineSpacingMultiple: 1.15
+        spaceBeforePt: 12
+        spaceAfterPt: 12
+        firstLineChars: 0
+        outlineLevel: 8
+        keepNext: true
+
+    # 表格段落样式
+    TableBase:
+      type: paragraph
+      basedOn: Normal
+      font:
+        eastAsia: 宋体
+        ascii: Times New Roman
+      paragraph:
+        align: center
+        lineSpacingMultiple: 1.0
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        leftIndentCm: 0
+        rightIndentCm: 0
+        firstLineChars: 0
+    TableCell:
+      type: paragraph
+      basedOn: TableBase
+      font:
+        eastAsia: 宋体
+        ascii: Times New Roman
+        sizePt: 14
+      paragraph:
+        align: center
+        lineSpacingMultiple: 1.0
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        leftIndentCm: 0
+        rightIndentCm: 0
+        firstLineChars: 0
+    TableHeaderCell:
+      type: paragraph
+      basedOn: TableBase
+      font:
+        eastAsia: 宋体
+        ascii: Times New Roman
+        sizePt: 14
+        bold: true
+      paragraph:
+        align: center
+        lineSpacingMultiple: 1.0
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        leftIndentCm: 0
+        rightIndentCm: 0
+        firstLineChars: 0
+
+    # 字符样式（摘自 sampleObserved）
+    "Heading 1 Char":
+      type: character
+      font:
+        eastAsia: 黑体
+        bold: true
+        sizePt: 20
+    "Heading 2 Char":
+      type: character
+      font:
+        eastAsia: KaiTi_GB2312
+        ascii: Cambria
+        sizePt: 18
+    "Heading 3 Char":
+      type: character
+      font:
+        ascii: Cambria
+        sizePt: 16
+    "Heading 4 Char":
+      type: character
+      font:
+        ascii: Cambria
+        bold: true
+        sizePt: 16
+    "Heading 5 Char":
+      type: character
+      font:
+        eastAsia: 宋体
+        ascii: Cambria
+        bold: true
+        sizePt: 14
+
+    InfoTable:
+      type: table
+      basedOn: Normal Table
+
+  pageSetup:
+    paper: A4
+    orientation: portrait
+    marginsCm:
+      top: 2.5
+      bottom: 2.5
+      left: 3.0
+      right: 2.0
+      header: 1.5
+      footer: 1.5
+    titleFirstPageDifferent: true
+    evenOddDifferent: false
+    pageNumbering:
+      position: footer
+      startAt: 1
+      format: decimal
+
+  numbering:
+    bindHeadings: true
+    preset: multilevel-outline
+    levels:
+      "1": { styleRef: "Heading 1" }
+      "2": { styleRef: "Heading 2" }
+      "3": { styleRef: "Heading 3" }
+      "4": { styleRef: "Heading 4" }
+      "5": { styleRef: "Heading 5" }
+      "6": { styleRef: "Heading 6" }
+
+  headersFooters:
+    header:
+      - type: text
+        styleRef: Normal
+        align: center
+        text: "Docx Stylekit"
+    footer:
+      - type: pageNumber
+        styleRef: Normal
+        align: center
+        pattern: PAGE
+
+  renderDefaults:
+    table:
+      styleRef: InfoTable
+      format:
+        header:
+          fill: "#DCE6F1"
+          color: "#1F3864"
+          bold: true
+          verticalAlign: center
+          border:
+            bottom:
+              style: single
+              color: "#9BAED9"
+              size: 6
+        alternate:
+          fill: "#F4F7FC"
+          verticalAlign: center
+        cell:
+          verticalAlign: center
+        tableBorder:
+          top: { style: single, color: "#305496", size: 6 }
+          bottom: { style: single, color: "#305496", size: 6 }
+          left: { style: single, color: "#305496", size: 6 }
+          right: { style: single, color: "#305496", size: 6 }
+          insideH: { style: single, color: "#9BAED9", size: 4 }
+          insideV: { style: single, color: "#9BAED9", size: 4 }

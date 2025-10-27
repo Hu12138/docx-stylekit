@@ -15,6 +15,7 @@
   * **页眉页脚**：`headersFooters`
   * **变量**：`variables`
   * **渲染策略**：`renderPolicy`
+  * **默认模版**：当 CLI `render` 未指定 `--template` 时，会自动合并 `docx_stylekit.data/default_render_template.yaml`，提供基础页面设置、表格样式与段落样式。
 
 ---
 
@@ -230,9 +231,27 @@
   "header":[ [ { "blocks":[{ "type":"paragraph", "styleRef":"Normal", "runs":[{"text":"列1"}] } ] },
                { "blocks":[{ "type":"paragraph", "styleRef":"Normal", "runs":[{"text":"列2"}] } ] } ] ],
   "rows":[ [ { "blocks":[{ "type":"paragraph", "styleRef":"Normal", "runs":[{"text":"A"}] } ] },
-             { "blocks":[{ "type":"paragraph", "styleRef":"Normal", "runs":[{"text":"B"}] } ] } ] ]
+             { "blocks":[{ "type":"paragraph", "styleRef":"Normal", "runs":[{"text":"B"}] } ] } ] ],
+  "format": {
+    "header": {
+      "fill": "#DCE6F1",
+      "color": "#1F3864",
+      "bold": true,
+      "verticalAlign": "center"
+    },
+    "cell": {
+      "verticalAlign": "center"
+    },
+    "tableBorder": {
+      "top": { "style": "single", "color": "#305496", "size": 6 },
+      "insideH": { "style": "single", "color": "#9BAED9", "size": 4 }
+    }
+  }
 }
 ```
+
+* `columns[].widthPct` 会自动映射为列宽（结合页面可用宽度）；未声明时使用 Word 默认列宽，如提供 `renderDefaults.table.columns` 则按该配置推断。
+* `format` 允许快速定义表头底色、交替行配色、垂直对齐与边框；若未指定，则回退到 `renderDefaults.table.format`（如存在）。
 
 5. `caption`
 
@@ -280,7 +299,33 @@
 
 ---
 
-## 11. `doc.constraints`（生成约束，渲染前可校验）
+## 11. `doc.renderDefaults`（内置渲染默认值）
+
+| 字段              | 类型    | 说明                                                                 |
+| ----------------- | ----- | -------------------------------------------------------------------- |
+| `table.styleRef`  | string | 未显式指定 `styleRef` 的表格使用的默认表格样式（如 `InfoTable`）                  |
+| `table.columns`   | array  | 默认列宽/对齐定义（`widthPct` + `align`）。表格未声明 `columns` 时按此推断。           |
+| `table.format`    | object | 表格视觉风格（见下）；可通过块内 `format` 覆盖指定字段。                                  |
+
+**`table.format` 常用键**
+
+| 字段             | 说明                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------ |
+| `header.fill`    | 表头底色，十六进制色值（如 `#DCE6F1`）                                                               |
+| `header.color`   | 表头文字颜色                                                                               |
+| `header.bold`    | 表头文字是否加粗                                                                             |
+| `header.verticalAlign` | 表头单元格垂直对齐：`top/center/middle/bottom/both`                                          |
+| `header.border.*` | 表头底部/左右边框样式，`style/color/size`                                                     |
+| `alternate.fill` | 奇偶行底色；启用 `bandedRows=true` 时生效                                                     |
+| `alternate.verticalAlign` | 交替行垂直对齐设置                                                                    |
+| `cell.verticalAlign` | 普通数据单元格垂直对齐（未指定时使用 Word 默认）                                             |
+| `tableBorder.*`  | 整体表格边框线配置（包括 `top/bottom/left/right/insideH/insideV`）                              |
+
+> CLI 未指定 `--template` 时，会自动合并 `default_render_template.yaml`，该文件示例化了蓝灰配色的 InfoTable 表格样式与宋体/Times New Roman 组合的段落样式。
+
+---
+
+## 12. `doc.constraints`（生成约束，渲染前可校验）
 
 | 字段                           | 类型       | 作用                     |
 | ---------------------------- | -------- | ---------------------- |
@@ -292,7 +337,7 @@
 
 ---
 
-## 12. `doc.renderPolicy`（可选的渲染策略位）
+## 13. `doc.renderPolicy`（可选的渲染策略位）
 
 | 字段                   | 类型      | 默认    | 说明                                              |
 | -------------------- | ------- | ----- | ----------------------------------------------- |

@@ -6,215 +6,442 @@
     "doc": {
       "type": "object",
       "properties": {
-        "meta": {
+        "meta": { "$ref": "#/definitions/meta" },
+        "styleCatalog": { "$ref": "#/definitions/styleCatalog" },
+        "stylesInline": {
           "type": "object",
-          "properties": {
-            "title": { "type": "string" },
-            "lang": { "type": "string", "pattern": "^[a-z]{2}-[A-Z]{2}$" },
-            "version": { "type": "string" },
-            "createdAt": { "type": "string", "format": "date-time" }
-          },
-          "required": ["title", "lang", "version", "createdAt"]
+          "additionalProperties": { "$ref": "#/definitions/styleDef" }
         },
-        "styleCatalog": {
+        "pageSetup": { "$ref": "#/definitions/pageSetup" },
+        "pageTemplates": {
           "type": "object",
-          "properties": {
-            "paragraph": {
-              "type": "array",
-              "items": { "type": "string" }
-            },
-            "character": {
-              "type": "array",
-              "items": { "type": "string" }
-            },
-            "table": {
-              "type": "array",
-              "items": { "type": "string" }
-            }
-          },
-          "required": ["paragraph", "character", "table"]
-        },
-        "pageSetup": {
-          "type": "object",
-          "properties": {
-            "paper": { "type": "string" },
-            "orientation": { "type": "string", "enum": ["portrait", "landscape"] },
-            "marginsCm": {
-              "type": "object",
-              "properties": {
-                "top": { "type": "number" },
-                "bottom": { "type": "number" },
-                "left": { "type": "number" },
-                "right": { "type": "number" },
-                "header": { "type": "number" },
-                "footer": { "type": "number" }
-              },
-              "required": ["top","bottom","left","right","header","footer"]
-            },
-            "titleFirstPageDifferent": { "type": "boolean" },
-            "evenOddDifferent": { "type": "boolean" },
-            "pageNumbering": {
-              "type": "object",
-              "properties": {
-                "position": { "type": "string", "enum": ["header","footer"] },
-                "startAt": { "type": "integer", "minimum": 1 },
-                "format": { "type": "string" }
-              },
-              "required": ["position","startAt","format"]
-            }
-          },
-          "required": ["paper","orientation","marginsCm","titleFirstPageDifferent","evenOddDifferent","pageNumbering"]
-        },
-        "numbering": {
-          "type": "object",
-          "properties": {
-            "bindHeadings": { "type": "boolean" },
-            "preset": { "type": "string" },
-            "levels": {
-              "type": "object",
-              "patternProperties": {
-                "^[1-9]$": {
-                  "type": "object",
-                  "properties": {
-                    "styleRef": { "type": "string" }
-                  },
-                  "required": ["styleRef"]
-                }
-              }
-            }
-          },
-          "required": ["bindHeadings","preset","levels"]
-        },
-        "toc": {
-          "type": "object",
-          "properties": {
-            "required": { "type": "boolean" },
-            "levels": {
-              "type": "array",
-              "items": { "type": "integer", "minimum": 1 }
-            },
-            "note": { "type": "string" }
-          },
-          "required": ["required","levels"]
-        },
-        "headersFooters": {
-          "type": "object",
-          "properties": {
-            "header": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "type": { "type": "string", "enum": ["text","pageNumber"] },
-                  "styleRef": { "type": "string" },
-                  "align": { "type": "string", "enum": ["left","center","right"] },
-                  "text": { "type": "string" },
-                  "pattern": { "type": "string" }
-                },
-                "required": ["type","styleRef","align"]
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "layout": { "$ref": "#/definitions/pageLayout" },
+              "blocks": {
+                "type": "array",
+                "items": { "$ref": "#/definitions/block" }
               }
             },
-            "footer": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "type": { "type": "string", "enum": ["text","pageNumber"] },
-                  "styleRef": { "type": "string" },
-                  "align": { "type": "string", "enum": ["left","center","right"] },
-                  "text": { "type": "string" },
-                  "pattern": { "type": "string" }
-                },
-                "required": ["type","styleRef","align"]
-              }
-            }
-          },
-          "required": ["header","footer"]
+            "required": ["blocks"],
+            "additionalProperties": false
+          }
         },
+        "numbering": { "$ref": "#/definitions/numbering" },
+        "toc": { "$ref": "#/definitions/toc" },
+        "headersFooters": { "$ref": "#/definitions/headersFooters" },
         "variables": {
           "type": "object",
           "additionalProperties": { "type": "string" }
         },
         "blocks": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "type": { "type": "string", "enum": ["paragraph","heading","list","table","figure","caption","pageBreak","conditional","repeat","variable"] },
-              "styleRef": { "type": "string" },
-              "level": { "type": "integer", "minimum": 1 },
-              "text": { "type": "string" },
-              "pageBreakBefore": { "type": "boolean" },
-              "runs": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "text": { "type": "string" },
-                    "charStyleRef": { "type": "string" }
-                  },
-                  "required": ["text"]
-                }
-              },
-              "ordered": { "type": "boolean" },
-              "items": {
-                "type": "array",
-                "items": { "$ref": "#/properties/doc/properties/blocks/items" }
-              },
-              "columns": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "widthPct": { "type": "number" },
-                    "align": { "type": "string", "enum": ["left","center","right"] }
-                  },
-                  "required": ["widthPct","align"]
-                }
-              },
-              "header": {
-                "type": "array",
-                "items": {
-                  "type": "array",
-                  "items": { "$ref": "#/properties/doc/properties/blocks/items" }
-                }
-              },
-              "rows": {
-                "type": "array",
-                "items": {
-                  "type": "array",
-                  "items": { "$ref": "#/properties/doc/properties/blocks/items" }
-                }
-              },
-              "for": { "type": "string" },
-              "as": { "type": "string" },
-              "template": {
-                "type": "array",
-                "items": { "$ref": "#/properties/doc/properties/blocks/items" }
-              }
-            },
-            "required": ["type"]
-          }
+          "items": { "$ref": "#/definitions/block" }
         },
-        "constraints": {
+        "renderDefaults": {
           "type": "object",
           "properties": {
-            "forbidDirectFormatting": { "type": "boolean" },
-            "allowedParagraphStyles": {
-              "type": "array",
-              "items": { "type": "string" }
-            },
-            "allowedCharacterStyles": {
-              "type": "array",
-              "items": { "type": "string" }
-            },
-            "maxHeadingLevel": { "type": "integer", "minimum": 1 },
-            "noManualNumbersForHeadings": { "type": "boolean" }
-          }
+            "table": {
+              "type": "object",
+              "properties": {
+                "styleRef": { "type": "string" },
+                "columns": { "$ref": "#/definitions/tableColumns" },
+                "format": { "$ref": "#/definitions/tableFormat" }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "constraints": { "$ref": "#/definitions/constraints" },
+        "renderPolicy": {
+          "type": "object",
+          "properties": {
+            "preferJsonStyles": { "type": "boolean" },
+            "failOnUnknownStyle": { "type": "boolean" }
+          },
+          "additionalProperties": false
         }
       },
-      "required": ["meta","styleCatalog","pageSetup","numbering","blocks"]
+      "required": ["meta", "styleCatalog", "pageSetup", "numbering", "blocks"],
+      "additionalProperties": false
     }
   },
-  "required": ["doc"]
+  "required": ["doc"],
+  "additionalProperties": false,
+  "definitions": {
+    "meta": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "lang": { "type": "string", "pattern": "^[a-z]{2}-[A-Z]{2}$" },
+        "version": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "lang", "version", "createdAt"],
+      "additionalProperties": false
+    },
+    "styleCatalog": {
+      "type": "object",
+      "properties": {
+        "paragraph": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "character": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "table": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["paragraph", "character", "table"],
+      "additionalProperties": false
+    },
+    "fontProps": {
+      "type": "object",
+      "properties": {
+        "eastAsia": { "type": "string" },
+        "ascii": { "type": "string" },
+        "sizePt": { "type": "number" },
+        "bold": { "type": "boolean" },
+        "italic": { "type": "boolean" },
+        "color": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "paragraphProps": {
+      "type": "object",
+      "properties": {
+        "align": { "type": "string", "enum": ["left", "center", "right", "both"] },
+        "lineSpacingMultiple": { "type": "number" },
+        "lineExactPt": { "type": "number" },
+        "lineAtLeastPt": { "type": "number" },
+        "spaceBeforePt": { "type": "number" },
+        "spaceAfterPt": { "type": "number" },
+        "firstLineChars": { "type": "number" },
+        "hangingChars": { "type": "number" },
+        "leftIndentCm": { "type": "number" },
+        "rightIndentCm": { "type": "number" },
+        "outlineLevel": { "type": "integer", "minimum": 0 },
+        "keepNext": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "numberingLink": {
+      "type": "object",
+      "properties": {
+        "link": { "type": "string" },
+        "level": { "type": "integer", "minimum": 0, "maximum": 8 }
+      },
+      "additionalProperties": false
+    },
+    "styleDef": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["paragraph", "character", "table"] },
+        "basedOn": { "type": "string" },
+        "font": { "$ref": "#/definitions/fontProps" },
+        "paragraph": { "$ref": "#/definitions/paragraphProps" },
+        "numbering": { "$ref": "#/definitions/numberingLink" },
+        "$override": { "type": "boolean" }
+      },
+      "required": ["type"],
+      "additionalProperties": false
+    },
+    "pageSetup": {
+      "type": "object",
+      "properties": {
+        "paper": { "type": "string" },
+        "orientation": { "type": "string", "enum": ["portrait", "landscape"] },
+        "marginsCm": {
+          "type": "object",
+          "properties": {
+            "top": { "type": "number" },
+            "bottom": { "type": "number" },
+            "left": { "type": "number" },
+            "right": { "type": "number" },
+            "header": { "type": "number" },
+            "footer": { "type": "number" }
+          },
+          "required": ["top", "bottom", "left", "right", "header", "footer"],
+          "additionalProperties": false
+        },
+        "titleFirstPageDifferent": { "type": "boolean" },
+        "evenOddDifferent": { "type": "boolean" },
+        "pageNumbering": {
+          "type": "object",
+          "properties": {
+            "position": { "type": "string", "enum": ["header", "footer"] },
+            "startAt": { "type": "integer", "minimum": 1 },
+            "format": { "type": "string" }
+          },
+          "required": ["position", "startAt", "format"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["paper", "orientation", "marginsCm", "titleFirstPageDifferent", "evenOddDifferent", "pageNumbering"],
+      "additionalProperties": false
+    },
+    "pageLayout": {
+      "type": "object",
+      "properties": {
+        "marginsCm": {
+          "type": "object",
+          "properties": {
+            "top": { "type": "number" },
+            "bottom": { "type": "number" },
+            "left": { "type": "number" },
+            "right": { "type": "number" },
+            "header": { "type": "number" },
+            "footer": { "type": "number" }
+          },
+          "additionalProperties": false
+        },
+        "orientation": { "type": "string", "enum": ["portrait", "landscape"] },
+        "verticalAlign": { "type": "string", "enum": ["top", "center", "both", "bottom"] },
+        "pageNumbering": {
+          "type": "object",
+          "properties": {
+            "position": { "type": "string", "enum": ["header", "footer"] },
+            "startAt": { "type": "integer", "minimum": 1 },
+            "format": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "titleFirstPageDifferent": { "type": "boolean" },
+        "evenOddDifferent": { "type": "boolean" },
+        "startAt": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "numbering": {
+      "type": "object",
+      "properties": {
+        "bindHeadings": { "type": "boolean" },
+        "preset": { "type": "string" },
+        "levels": {
+          "type": "object",
+          "patternProperties": {
+            "^[1-9]$": {
+              "type": "object",
+              "properties": {
+                "styleRef": { "type": "string" }
+              },
+              "required": ["styleRef"],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["bindHeadings", "preset", "levels"],
+      "additionalProperties": false
+    },
+    "toc": {
+      "type": "object",
+      "properties": {
+        "required": { "type": "boolean" },
+        "levels": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 1 }
+        },
+        "note": { "type": "string" }
+      },
+      "required": ["required", "levels"],
+      "additionalProperties": false
+    },
+    "headersFooters": {
+      "type": "object",
+      "properties": {
+        "header": { "$ref": "#/definitions/headerFooterItems" },
+        "footer": { "$ref": "#/definitions/headerFooterItems" }
+      },
+      "required": ["header", "footer"],
+      "additionalProperties": false
+    },
+    "headerFooterItems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["text", "pageNumber"] },
+          "styleRef": { "type": "string" },
+          "align": { "type": "string", "enum": ["left", "center", "right"] },
+          "text": { "type": "string" },
+          "pattern": { "type": "string" }
+        },
+        "required": ["type", "styleRef", "align"],
+        "additionalProperties": false
+      }
+    },
+    "tableColumns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "widthPct": { "type": "number" },
+          "align": { "type": "string", "enum": ["left", "center", "right"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "tableBorderEdge": {
+      "type": "object",
+      "properties": {
+        "style": { "type": "string" },
+        "color": { "type": "string" },
+        "size": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "tableFormatCell": {
+      "type": "object",
+      "properties": {
+        "fill": { "type": "string" },
+        "color": { "type": "string" },
+        "bold": { "type": "boolean" },
+        "verticalAlign": { "type": "string", "enum": ["top", "center", "middle", "bottom", "both"] },
+        "border": {
+          "type": "object",
+          "properties": {
+            "top": { "$ref": "#/definitions/tableBorderEdge" },
+            "bottom": { "$ref": "#/definitions/tableBorderEdge" },
+            "left": { "$ref": "#/definitions/tableBorderEdge" },
+            "right": { "$ref": "#/definitions/tableBorderEdge" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "tableFormat": {
+      "type": "object",
+      "properties": {
+        "header": { "$ref": "#/definitions/tableFormatCell" },
+        "alternate": { "$ref": "#/definitions/tableFormatCell" },
+        "cell": { "$ref": "#/definitions/tableFormatCell" },
+        "tableBorder": {
+          "type": "object",
+          "properties": {
+            "top": { "$ref": "#/definitions/tableBorderEdge" },
+            "bottom": { "$ref": "#/definitions/tableBorderEdge" },
+            "left": { "$ref": "#/definitions/tableBorderEdge" },
+            "right": { "$ref": "#/definitions/tableBorderEdge" },
+            "insideH": { "$ref": "#/definitions/tableBorderEdge" },
+            "insideV": { "$ref": "#/definitions/tableBorderEdge" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "block": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["paragraph", "heading", "list", "table", "figure", "caption", "pageBreak", "conditional", "repeat", "variable", "toc"]
+            },
+            "styleRef": { "type": "string" },
+            "level": { "type": "integer", "minimum": 1 },
+            "text": { "type": "string" },
+            "pageBreakBefore": { "type": "boolean" },
+            "runs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "text": { "type": "string" },
+                  "charStyleRef": { "type": "string" }
+                },
+                "required": ["text"],
+                "additionalProperties": false
+              }
+            },
+            "ordered": { "type": "boolean" },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "runs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "text": { "type": "string" },
+                        "charStyleRef": { "type": "string" }
+                      },
+                      "required": ["text"],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "columns": { "$ref": "#/definitions/tableColumns" },
+            "header": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": { "$ref": "#/definitions/block" }
+              }
+            },
+            "rows": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": { "$ref": "#/definitions/block" }
+              }
+            },
+            "for": { "type": "string" },
+            "as": { "type": "string" },
+            "template": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/block" }
+            },
+            "format": { "$ref": "#/definitions/tableFormat" }
+          },
+          "required": ["type"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "useTemplate": { "type": "string" },
+            "variables": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "required": ["useTemplate"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "forbidDirectFormatting": { "type": "boolean" },
+        "allowedParagraphStyles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "allowedCharacterStyles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "maxHeadingLevel": { "type": "integer", "minimum": 1 },
+        "noManualNumbersForHeadings": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  }
 }
