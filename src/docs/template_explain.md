@@ -178,6 +178,7 @@
 | `pattern`  | string                        |    | 页码域格式（当 `type=pageNumber`，常用 `PAGE`） |
 
 > 若模板 DOCX 已有页码域，渲染器可选择**不重复插入**。
+> 默认模板提供 `PageNumber` 段落样式（Times New Roman、四号、单倍行距、无缩进）；若 `headersFooters.footer` 中 `styleRef` 指向该样式，即可套用企业统一的页码样式。
 
 ---
 
