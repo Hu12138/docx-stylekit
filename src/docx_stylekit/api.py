@@ -23,6 +23,7 @@ from .parsers.document import parse_sections
 from .parsers.headers_footers import detect_page_field
 from .emit.observed_yaml import emit_observed_yaml
 from .tools.image_paragraphs import fix_image_paragraph_spacing
+from .tools.sanitizer import sanitize_docx as _sanitize_docx
 
 
 BytesLike = Union[bytes, bytearray, memoryview]
@@ -233,3 +234,17 @@ def fix_image_paragraphs(
         raise ValueError("input path is required")
     destination = _ensure_path(output_path)
     return fix_image_paragraph_spacing(input_path, destination)
+
+
+def sanitize_docx(
+    raw_docx: PathLike,
+    template_docx: Optional[PathLike] = None,
+    *,
+    output_path: Optional[PathLike] = None,
+) -> Path:
+    raw_path = _ensure_path(raw_docx)
+    if raw_path is None:
+        raise ValueError("raw_docx is required")
+    template_path = _ensure_path(template_docx) if template_docx else None
+    output = _ensure_path(output_path) if output_path else None
+    return _sanitize_docx(raw_path, template_path, output_path=output)

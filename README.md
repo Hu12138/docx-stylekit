@@ -33,6 +33,9 @@ docx-stylekit diff examples/enterprise_baseline.yaml observed.yaml
 # Markdown → DOCX（可选 --template / --styles）
 docx-stylekit markdown doc/测试用例.md -o doc/output.docx
 
+# 基于标准模板修复样式
+docx-stylekit sanitize doc/糟糕样式.docx -t doc/iflytek_due_diligence.docx -o doc/糟糕样式_修复.docx
+
 # 调整图片段落（行距/对齐/缩进）
 docx-stylekit fix-images doc/测试用例.docx -o doc/测试用例_图片优化.docx
 ```
@@ -49,6 +52,7 @@ from docx_stylekit import (
     merge_yaml,
     diff_yaml,
     render_from_markdown,
+    sanitize_docx,
     fix_image_paragraphs,
 )
 
@@ -63,6 +67,9 @@ diffs = diff_yaml("examples/enterprise_baseline.yaml", observed)
 
 # Markdown → DOCX（返回字节流，可直接用于 HTTP Response）
 docx_bytes = render_from_markdown("# 标题\n\n内容", return_bytes=True)
+
+# 按企业模板统一样式
+sanitize_docx("原稿.docx", template_docx="企业标准.docx", output_path="原稿_修复.docx")
 
 # 规范图片段落（单倍行距、居中、零缩进）
 fix_image_paragraphs("报告初稿.docx", output_path="报告初稿_图片调整.docx")

@@ -8,6 +8,7 @@ from .api import (
     render_from_json,
     render_from_markdown,
     fix_image_paragraphs,
+    sanitize_docx,
 )
 
 @click.group()
@@ -99,6 +100,17 @@ def fix_images(docx_path, output):
     """调整包含图片段落的行距、对齐与缩进。"""
     result = fix_image_paragraphs(docx_path, output_path=output)
     click.echo(Fore.GREEN + f"Image paragraphs adjusted: {result}" + Style.RESET_ALL)
+
+
+@main.command("sanitize")
+@click.argument("raw_docx", type=click.Path(exists=True))
+@click.option("-t", "--template", type=click.Path(exists=True), required=False,
+              help="标准样式模板 DOCX（未提供时使用默认样式）。")
+@click.option("-o", "--output", type=click.Path(), help="输出 DOCX 路径（默认覆盖原文件）。")
+def sanitize_cmd(raw_docx, template, output):
+    """应用标准样式模板，规范化 DOCX（标题/表格/图片等样式）。"""
+    result = sanitize_docx(raw_docx, template_docx=template, output_path=output)
+    click.echo(Fore.GREEN + f"Sanitized DOCX generated at: {result}" + Style.RESET_ALL)
 
 
 if __name__ == "__main__":

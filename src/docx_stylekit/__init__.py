@@ -5,6 +5,7 @@ from .api import (
     render_from_json,
     render_from_markdown,
     fix_image_paragraphs,
+    sanitize_docx,
 )
 
 __all__ = [
@@ -15,6 +16,7 @@ __all__ = [
     "render_from_json",
     "render_from_markdown",
     "fix_image_paragraphs",
+    "sanitize_docx",
 ]
 
 __version__ = "0.2.0"
