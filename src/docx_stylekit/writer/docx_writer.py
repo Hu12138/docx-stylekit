@@ -312,6 +312,15 @@ def write_blocks(
             continue
 
         # 其它类型（figure 等）可按需扩展
+def _clear_document_body(doc: Document):
+    """移除模板中的现有正文内容，仅保留节属性。"""
+    body = doc._body._element
+    for child in list(body):
+        if child.tag == qn('w:sectPr'):
+            continue
+        body.remove(child)
+
+
 # src/docx_stylekit/writer/docx_writer.py （续）
 
 def render_to_docx(template_json: dict,
@@ -319,7 +328,8 @@ def render_to_docx(template_json: dict,
                    styles_yaml: dict = None,
                    output_path: str = "output.docx",
                    prefer_json_styles: bool = False,
-                   fail_on_unknown_style: bool = True):
+                   fail_on_unknown_style: bool = True,
+                   clear_existing_content: bool = True):
     """
     template_json: expand_document() 的结果（已展开变量/循环/条件；保留 useTemplate）
     template_docx_path: 样式/编号/页眉页脚基础骨架。可为空（使用内置空白文档）
@@ -334,6 +344,8 @@ def render_to_docx(template_json: dict,
     # 打开模板 DOCX（若未提供，则使用空白文档）
     if template_docx_path:
         doc = Document(template_docx_path)
+        if clear_existing_content:
+            _clear_document_body(doc)
     else:
         doc = Document()
     # 挂载配置供 writer 使用
