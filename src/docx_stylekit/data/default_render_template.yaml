@@ -20,6 +20,7 @@ doc:
       - TableCell
       - TableHeaderCell
       - PageNumber
+      - ImageParagraph
     character:
       - Default Paragraph Font
       - Heading 1 Char
@@ -232,6 +233,24 @@ doc:
         leftIndentCm: 0
         rightIndentCm: 0
         firstLineChars: 0
+    ImageParagraph:  # 图片段落：单倍行距、居中、零缩进
+      type: paragraph
+      $override: true
+      font:
+        eastAsia: FangSong_GB2312
+        ascii: Times New Roman
+        sizePt: 16
+        color: "#000000"
+        bold: false
+        italic: false
+      paragraph:
+        align: center
+        lineSpacingMultiple: 1.0
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        firstLineChars: 0
+        leftIndentCm: 0
+        rightIndentCm: 0
     TableCell:  # 表格普通单元格段落
       type: paragraph
       basedOn: TableBase

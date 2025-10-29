@@ -22,6 +22,7 @@ from .parsers.numbering import parse_numbering
 from .parsers.document import parse_sections
 from .parsers.headers_footers import detect_page_field
 from .emit.observed_yaml import emit_observed_yaml
+from .tools.image_paragraphs import fix_image_paragraph_spacing
 
 
 BytesLike = Union[bytes, bytearray, memoryview]
@@ -220,3 +221,15 @@ def _merge_with_default(data: Dict[str, Any]) -> Dict[str, Any]:
     with resources.as_file(resource_path) as path:
         default_profile = load_yaml(path)
     return deep_merge(default_profile, data)
+
+
+def fix_image_paragraphs(
+    docx: PathLike,
+    *,
+    output_path: Optional[PathLike] = None,
+) -> Path:
+    input_path = _ensure_path(docx)
+    if input_path is None:
+        raise ValueError("input path is required")
+    destination = _ensure_path(output_path)
+    return fix_image_paragraph_spacing(input_path, destination)

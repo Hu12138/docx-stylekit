@@ -7,6 +7,7 @@ from .api import (
     diff_yaml,
     render_from_json,
     render_from_markdown,
+    fix_image_paragraphs,
 )
 
 @click.group()
@@ -89,6 +90,15 @@ def markdown(markdown_path, template, styles, output, title, prefer_json_styles,
         title=title,
     )
     click.echo(Fore.GREEN + f"DOCX generated at: {output}" + Style.RESET_ALL)
+
+
+@main.command("fix-images")
+@click.argument("docx_path", type=click.Path(exists=True))
+@click.option("-o", "--output", type=click.Path(), help="输出 DOCX 路径（默认覆盖原文件）")
+def fix_images(docx_path, output):
+    """调整包含图片段落的行距、对齐与缩进。"""
+    result = fix_image_paragraphs(docx_path, output_path=output)
+    click.echo(Fore.GREEN + f"Image paragraphs adjusted: {result}" + Style.RESET_ALL)
 
 
 if __name__ == "__main__":

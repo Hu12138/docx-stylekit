@@ -32,6 +32,9 @@ docx-stylekit diff examples/enterprise_baseline.yaml observed.yaml
 
 # Markdown → DOCX（可选 --template / --styles）
 docx-stylekit markdown doc/测试用例.md -o doc/output.docx
+
+# 调整图片段落（行距/对齐/缩进）
+docx-stylekit fix-images doc/测试用例.docx -o doc/测试用例_图片优化.docx
 ```
 
 `docx-stylekit markdown` 默认会应用内置模板的样式（标题、页码等已设为中文规范）；若需要企业模板，可加 `-t 企业模板.docx`。
@@ -46,6 +49,7 @@ from docx_stylekit import (
     merge_yaml,
     diff_yaml,
     render_from_markdown,
+    fix_image_paragraphs,
 )
 
 # 解析 DOCX
@@ -59,6 +63,9 @@ diffs = diff_yaml("examples/enterprise_baseline.yaml", observed)
 
 # Markdown → DOCX（返回字节流，可直接用于 HTTP Response）
 docx_bytes = render_from_markdown("# 标题\n\n内容", return_bytes=True)
+
+# 规范图片段落（单倍行距、居中、零缩进）
+fix_image_paragraphs("报告初稿.docx", output_path="报告初稿_图片调整.docx")
 ```
 
 更多 API 说明见 `src/docx_stylekit/api.py`，包括传入/输出 `bytes`、模板样式覆盖等选项。

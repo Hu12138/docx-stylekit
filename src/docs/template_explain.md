@@ -68,6 +68,7 @@
 ## 3. `doc.stylesInline`（JSON 内联样式库，可新增/可覆盖）
 
 * 用于**新增** YAML 中没有的样式（如 `CoverTitle`、`ReferenceItem`），或在需要时**受控覆盖**同名 YAML 样式的字段。
+* 默认模板额外提供了 `PageNumber`（页码段落）与 `ImageParagraph`（图片居中、零缩进、单倍行距）等辅助样式，可在 JSON 中直接引用。
 
 **样式对象 `StyleDef`**
 
