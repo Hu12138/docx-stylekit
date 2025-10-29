@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "docx-stylekit"
-version = "0.1.0"
+version = "0.2.0"
 description = "Extract, normalize and merge DOCX style baselines via XML."
 readme = "README.md"
 requires-python = ">=3.9"

@@ -1,53 +1,89 @@
-简要写明：
+# docx-stylekit
 
-安装：pip install -e .
+> 版本：0.2.0
 
-用法：
+`docx-stylekit` 通过解析 OOXML，把 Word 模板抽取成结构化 YAML；同时支持把 YAML/JSON/Markdown 渲染回规范的 DOCX，适合构建企业文档标准化、模板校验等工具链。
 
+## 安装
+
+```bash
+pip install docx-stylekit
+```
+
+开发环境可直接本地安装：
+
+```bash
+git clone https://github.com/your-org/docx-stylekit.git
+cd docx-stylekit
+pip install -e .
+```
+
+## 命令行使用
+
+```bash
+# 解析 DOCX → observed.yaml
 docx-stylekit observe examples/sample.docx -o observed.yaml
 
+# 合并企业基线与观测结果
 docx-stylekit merge examples/enterprise_baseline.yaml observed.yaml -o merged.yaml
 
+# Diff 两份 YAML
 docx-stylekit diff examples/enterprise_baseline.yaml observed.yaml
 
+# Markdown → DOCX（可选 --template / --styles）
+docx-stylekit markdown doc/测试用例.md -o doc/output.docx
+```
+
+`docx-stylekit markdown` 默认会应用内置模板的样式（标题、页码等已设为中文规范）；若需要企业模板，可加 `-t 企业模板.docx`。
+
+## Python API
+
+CLI 所有能力均可通过代码调用，方便集成 Flask/FastAPI：
+
+```python
+from docx_stylekit import (
+    observe_docx,
+    merge_yaml,
+    diff_yaml,
+    render_from_markdown,
+)
+
+# 解析 DOCX
+observed = observe_docx("examples/sample.docx")
+
+# 合并基线
+merged = merge_yaml("examples/enterprise_baseline.yaml", observed)
+
+# Diff
+diffs = diff_yaml("examples/enterprise_baseline.yaml", observed)
+
+# Markdown → DOCX（返回字节流，可直接用于 HTTP Response）
+docx_bytes = render_from_markdown("# 标题\n\n内容", return_bytes=True)
+```
+
+更多 API 说明见 `src/docx_stylekit/api.py`，包括传入/输出 `bytes`、模板样式覆盖等选项。
+
+## 仓库结构
+
+```
 docx-stylekit/
-├─ pyproject.toml
-├─ README.md
-├─ LICENSE
-├─ .gitignore
-├─ examples/
-│  ├─ enterprise_baseline.yaml        # 你的企业基线模板（来自我们上一版）
-│  └─ sample.docx                     # 外部模板样例（自备）
-├─ src/
-│  └─ docx_stylekit/
-│     ├─ __init__.py
-│     ├─ cli.py                       # 命令行入口：observe / merge / diff / validate
-│     ├─ constants.py                 # 命名空间、字号映射等常量
-│     ├─ utils/
-│     │  ├─ units.py                  # twips/pt/cm 转换、字号名映射
-│     │  ├─ xml.py                    # XML 辅助：读/写/查找、属性读取
-│     │  └─ io.py                     # 文件读写、YAML load/dump、安全解压
-│     ├─ io/
-│     │  ├─ docx_zip.py               # 读 docx zip & 取出各 XML 部件
-│     │  └─ rels.py                   # 关系解析（rels）
-│     ├─ parsers/
-│     │  ├─ theme.py                  # 解析 theme1.xml → 主题色/字体
-│     │  ├─ styles.py                 # 解析 styles.xml → 段落/字符/表格样式
-│     │  ├─ numbering.py              # 解析 numbering.xml → 多级编号绑定
-│     │  ├─ document.py               # 解析 document.xml → 分节/页面/表格摘要/直改统计
-│     │  └─ headers_footers.py        # 解析 header*/footer* → 页码域、样式
-│     ├─ model/
-│     │  ├─ observed.py               # “观测数据”的Python结构 & 合并前标准化
-│     │  └─ schema.py                 # YAML 映射路径与模式（轻量）
-│     ├─ emit/
-│     │  ├─ observed_yaml.py          # 把观测数据转成 observed.yaml（结构与基线一致）
-│     │  └─ report.py                 # 生成 diff 报告（文本/JSON）
-│     ├─ merge/
-│     │  └─ merger.py                 # enterprise_baseline.yaml + observed.yaml → merged.yaml
-│     └─ diff/
-│        └─ differ.py                 # 结构化 diff，供 report.py 使用
-└─ tests/
-   ├─ test_observe_min.py
-   ├─ test_merge_min.py
-   └─ assets/
-      └─ small.docx
+├─ src/docx_stylekit/
+│  ├─ api.py                 # 对外公开的 Python API
+│  ├─ cli.py                 # 命令行入口
+│  ├─ convert/               # Markdown → JSON 模板
+│  ├─ parsers/               # 解析 theme/styles/document 等
+│  ├─ writer/                # 基于 python-docx 写回 DOCX
+│  ├─ data/default_render_template.yaml  # 内置样式与页码设置
+│  └─ ...
+├─ tests/                    # 单元测试（pytest）
+└─ examples/                 # 示例 YAML 与 DOCX
+```
+
+## 开发
+
+```bash
+pip install -e ".[dev]"
+python -m pytest
+```
+
+欢迎根据业务场景扩展校验规则、渲染模板或对接 Web 服务。*** End Patch
