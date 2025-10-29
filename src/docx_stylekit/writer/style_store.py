@@ -7,11 +7,17 @@ def _set_rfonts(rPr, eastAsia=None, ascii_=None):
     if rfonts is None:
         rfonts = OxmlElement('w:rFonts')
         rPr.append(rfonts)
+    # 清理主题字体引用，避免 Word 继续使用 theme 字体（如 MS Gothic）
+    for attr in ('w:asciiTheme', 'w:hAnsiTheme', 'w:eastAsiaTheme', 'w:cstheme'):
+        ns_attr = qn(attr)
+        if ns_attr in rfonts.attrib:
+            del rfonts.attrib[ns_attr]
     if eastAsia:
         rfonts.set(qn('w:eastAsia'), eastAsia)
     if ascii_:
         rfonts.set(qn('w:ascii'), ascii_)
         rfonts.set(qn('w:hAnsi'), ascii_)
+        rfonts.set(qn('w:cs'), ascii_)
 
 def _ensure_child(parent, tag):
     el = parent.find(qn(tag))
@@ -32,26 +38,38 @@ def apply_font_rpr(rPr, font: dict):
     if font is None:
         return
     _set_rfonts(rPr, font.get("eastAsia"), font.get("ascii"))
+    if font.get("color"):
+        color = _ensure_child(rPr, 'w:color')
+        hex_val = font["color"].lstrip('#').upper()
+        color.set(qn('w:val'), hex_val)
+        color.attrib.pop(qn('w:themeColor'), None)
+        color.attrib.pop(qn('w:themeTint'), None)
+        color.attrib.pop(qn('w:themeShade'), None)
     if "sizePt" in font and font["sizePt"]:
         sz = _ensure_child(rPr, 'w:sz')
         sz.set(qn('w:val'), str(_pt_to_halfpt(font["sizePt"])))
     if "bold" in font:
         if font["bold"]:
             _ensure_child(rPr, 'w:b')
+            _ensure_child(rPr, 'w:bCs')
         else:
             b = rPr.find(qn('w:b'))
             if b is not None:
                 rPr.remove(b)
+            bcs = rPr.find(qn('w:bCs'))
+            if bcs is not None:
+                rPr.remove(bcs)
     if "italic" in font:
         if font["italic"]:
             _ensure_child(rPr, 'w:i')
+            _ensure_child(rPr, 'w:iCs')
         else:
             i = rPr.find(qn('w:i'))
             if i is not None:
                 rPr.remove(i)
-    if "color" in font and font["color"]:
-        color = _ensure_child(rPr, 'w:color')
-        color.set(qn('w:val'), font["color"].lstrip('#').upper())
+            ics = rPr.find(qn('w:iCs'))
+            if ics is not None:
+                rPr.remove(ics)
 
 def apply_paragraph_ppr(pPr, para: dict):
     if para is None:

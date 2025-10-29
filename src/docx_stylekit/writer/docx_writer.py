@@ -372,6 +372,15 @@ def render_to_docx(template_json: dict,
 
     # 构建解析器（支持 JSON 动态新增样式 & 受控覆盖）
     resolver = StyleResolver(doc, styles_inline, prefer_json_styles=prefer_json_styles)
+    # 预加载所有内联样式，确保字体/颜色覆盖立即生效
+    for name, style_def in styles_inline.items():
+        stype = style_def.get("type")
+        if stype in ("paragraph", "character", "table"):
+            try:
+                resolver.ensure_style(name, stype)
+            except ValueError:
+                # table 样式在文档缺失时跳过，由后续调用按需创建
+                continue
 
     # TOC（顶层 doc.toc.required 也可以在 blocks 里单独放 type:"toc" 控制位置）
     # 若需要固定在文档开头：可以在此插入；这里尊重 blocks 中的显式位置。
@@ -393,6 +402,11 @@ def render_to_docx(template_json: dict,
             if comp.get("type") == "pageNumber":
                 for section in doc.sections:
                     fp = section.footer.paragraphs[0] if section.footer.paragraphs else section.footer.add_paragraph()
+                    style_ref = comp.get("styleRef")
+                    if style_ref:
+                        style_obj = resolver.ensure_style(style_ref, "paragraph")
+                        if style_obj:
+                            fp.style = style_obj
                     if not fp.text.strip():
                         add_page_number_field(fp, align=comp.get("align", "center"))
 

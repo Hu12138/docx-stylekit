@@ -19,6 +19,7 @@ doc:
       - TableBase
       - TableCell
       - TableHeaderCell
+      - PageNumber
     character:
       - Default Paragraph Font
       - Heading 1 Char
@@ -26,164 +27,203 @@ doc:
       - Heading 3 Char
       - Heading 4 Char
       - Heading 5 Char
+      - Heading 6 Char
+      - Heading 7 Char
+      - Heading 8 Char
+      - Heading 9 Char
     table:
       - Normal Table
       - InfoTable
   stylesInline:
     # 段落样式（复刻 sampleObserved 的核心设置）
-    Normal:
+    Normal:  # 正文字体与段落默认设置
       type: paragraph
       $override: true
       font:
-        eastAsia: FangSong_GB2312
-        ascii: Times New Roman
+        eastAsia: FangSong_GB2312  # 中文字体
+        ascii: Times New Roman     # 西文字体
+        sizePt: 16                 # 字号（磅）
+        color: "#000000"           # 字体颜色
+      paragraph:
+        align: both                # 段落对齐方式
+        lineExactPt: 28            # 行距（固定值）
+        spaceBeforePt: 0           # 段前磅值
+        spaceAfterPt: 0            # 段后磅值
+        firstLineChars: 2          # 首行缩进（字符）
+        leftIndentCm: 0            # 左缩进（厘米）
+        rightIndentCm: 0           # 右缩进（厘米）
+    Heading 1:  # 一级标题
+      type: paragraph
+      $override: true
+      font:
+        eastAsia: 黑体             # 中文字体
+        ascii: Times New Roman     # 统一西文字体
+        bold: false
+        italic: false
+        color: "#000000"           # 黑色
+        sizePt: 16                 # 三号（16pt）
+      paragraph:
+        align: left                # 左对齐
+        lineExactPt: 28
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        firstLineChars: 2          # 首行缩进两字符
+        outlineLevel: 0            # 大纲级别
+        keepNext: true             # 与下一段同页
+    Heading 2:  # 二级标题
+      type: paragraph
+      $override: true
+      font:
+        eastAsia: 楷体_GB2312      # 中文字体
+        ascii: Times New Roman     # 西文字体
+        bold: false
+        italic: false
+        color: "#000000"           # 黑色
+        sizePt: 16                 # 三号（16pt）
+      paragraph:
+        align: left
+        lineExactPt: 28
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        firstLineChars: 2          # 首行缩进两字符
+        outlineLevel: 1
+        keepNext: true
+    Heading 3:  # 三级标题
+      type: paragraph
+      $override: true
+      font:
+        eastAsia: 仿宋_GB2312      # 中文字体
+        ascii: Times New Roman     # 西文字体
+        bold: false
+        italic: false
+        color: "#000000"
         sizePt: 16
       paragraph:
-        align: both
+        align: left
         lineExactPt: 28
         spaceBeforePt: 0
         spaceAfterPt: 0
         firstLineChars: 2
-        leftIndentCm: 0
-        rightIndentCm: 0
-    Heading 1:
-      type: paragraph
-      $override: true
-      font:
-        eastAsia: 黑体
-        bold: true
-      paragraph:
-        align: left
-        lineExactPt: 28
-        spaceBeforePt: 0
-        spaceAfterPt: 0
-        firstLineChars: 0
-        outlineLevel: 0
-        keepNext: true
-    Heading 2:
-      type: paragraph
-      $override: true
-      font:
-        eastAsia: KaiTi_GB2312
-        ascii: Cambria
-      paragraph:
-        align: left
-        lineExactPt: 28
-        spaceBeforePt: 0
-        spaceAfterPt: 0
-        firstLineChars: 0
-        outlineLevel: 1
-        keepNext: true
-    Heading 3:
-      type: paragraph
-      $override: true
-      font:
-        ascii: Cambria
-      paragraph:
-        align: left
-        lineExactPt: 28
-        spaceBeforePt: 13
-        spaceAfterPt: 13
-        firstLineChars: 0
         outlineLevel: 2
         keepNext: true
-    Heading 4:
+    Heading 4:  # 四级标题
       type: paragraph
       $override: true
       font:
-        ascii: Cambria
-        bold: true
+        eastAsia: 仿宋_GB2312
+        ascii: Times New Roman
+        bold: false
+        italic: false
+        color: "#000000"
         sizePt: 16
       paragraph:
-        lineExactPt: 24
+        align: left
+        lineExactPt: 28
         spaceBeforePt: 0
         spaceAfterPt: 0
-        firstLineChars: 0
+        firstLineChars: 2
         outlineLevel: 3
         keepNext: true
-    Heading 5:
+    Heading 5:  # 五级标题
       type: paragraph
       $override: true
       font:
-        eastAsia: 宋体
-        ascii: Cambria
-        bold: true
-        sizePt: 14
+        eastAsia: 仿宋_GB2312
+        ascii: Times New Roman
+        bold: false
+        italic: false
+        color: "#000000"
+        sizePt: 16
       paragraph:
-        lineSpacingMultiple: 1.15
-        spaceBeforePt: 14
-        spaceAfterPt: 14
+        align: left
+        lineExactPt: 28
+        spaceBeforePt: 0
+        spaceAfterPt: 0
         firstLineChars: 2
         outlineLevel: 4
         keepNext: true
-    Heading 6:
+    Heading 6:  # 六级标题
       type: paragraph
       $override: true
       font:
-        eastAsia: 黑体
-        ascii: Arial
-        bold: true
-        sizePt: 12
+        eastAsia: 仿宋_GB2312
+        ascii: Times New Roman
+        bold: false
+        italic: false
+        color: "#000000"
+        sizePt: 16
       paragraph:
-        lineSpacingMultiple: 1.15
-        spaceBeforePt: 12
-        spaceAfterPt: 12
-        firstLineChars: 0
+        align: left
+        lineExactPt: 28
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        firstLineChars: 2
         outlineLevel: 5
         keepNext: true
-    Heading 7:
+    Heading 7:  # 七级标题
       type: paragraph
       $override: true
       font:
-        eastAsia: 黑体
-        ascii: Arial
-        bold: true
-        sizePt: 12
+        eastAsia: 仿宋_GB2312
+        ascii: Times New Roman
+        bold: false
+        italic: false
+        color: "#000000"
+        sizePt: 16
       paragraph:
-        lineSpacingMultiple: 1.15
-        spaceBeforePt: 12
-        spaceAfterPt: 12
-        firstLineChars: 0
+        align: left
+        lineExactPt: 28
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        firstLineChars: 2
         outlineLevel: 6
         keepNext: true
-    Heading 8:
+    Heading 8:  # 八级标题
       type: paragraph
       $override: true
       font:
-        eastAsia: 黑体
-        ascii: Arial
-        bold: true
-        sizePt: 12
+        eastAsia: 仿宋_GB2312
+        ascii: Times New Roman
+        bold: false
+        italic: false
+        color: "#000000"
+        sizePt: 16
       paragraph:
-        lineSpacingMultiple: 1.15
-        spaceBeforePt: 12
-        spaceAfterPt: 12
-        firstLineChars: 0
+        align: left
+        lineExactPt: 28
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        firstLineChars: 2
         outlineLevel: 7
         keepNext: true
-    Heading 9:
+    Heading 9:  # 九级标题
       type: paragraph
       $override: true
       font:
-        eastAsia: 黑体
-        ascii: Arial
-        bold: true
-        sizePt: 12
+        eastAsia: 仿宋_GB2312
+        ascii: Times New Roman
+        bold: false
+        italic: false
+        color: "#000000"
+        sizePt: 16
       paragraph:
-        lineSpacingMultiple: 1.15
-        spaceBeforePt: 12
-        spaceAfterPt: 12
-        firstLineChars: 0
+        align: left
+        lineExactPt: 28
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        firstLineChars: 2
         outlineLevel: 8
         keepNext: true
 
     # 表格段落样式
-    TableBase:
+    TableBase:  # 表格正文段落
       type: paragraph
       basedOn: Normal
       font:
-        eastAsia: 宋体
-        ascii: Times New Roman
+        eastAsia: 宋体            # 中文字体
+        ascii: Times New Roman    # 西文字体
+        sizePt: 12                # 小四（12pt）
+        color: "#000000"
       paragraph:
         align: center
         lineSpacingMultiple: 1.0
@@ -192,13 +232,14 @@ doc:
         leftIndentCm: 0
         rightIndentCm: 0
         firstLineChars: 0
-    TableCell:
+    TableCell:  # 表格普通单元格段落
       type: paragraph
       basedOn: TableBase
       font:
         eastAsia: 宋体
         ascii: Times New Roman
-        sizePt: 14
+        sizePt: 12
+        color: "#000000"
       paragraph:
         align: center
         lineSpacingMultiple: 1.0
@@ -213,8 +254,8 @@ doc:
       font:
         eastAsia: 宋体
         ascii: Times New Roman
-        sizePt: 14
-        bold: true
+        sizePt: 12
+        color: "#000000"
       paragraph:
         align: center
         lineSpacingMultiple: 1.0
@@ -223,38 +264,99 @@ doc:
         leftIndentCm: 0
         rightIndentCm: 0
         firstLineChars: 0
+    PageNumber:  # 页码段落样式
+      type: paragraph
+      basedOn: Normal
+      $override: true
+      font:
+        eastAsia: Times New Roman
+        ascii: Times New Roman
+        sizePt: 14  # 四号
+        color: "#000000"
+        bold: false
+        italic: false
+      paragraph:
+        align: center
+        lineSpacingMultiple: 1.0
+        spaceBeforePt: 0
+        spaceAfterPt: 0
+        firstLineChars: 0
+        leftIndentCm: 0
+        rightIndentCm: 0
 
     # 字符样式（摘自 sampleObserved）
     "Heading 1 Char":
       type: character
+      $override: true
       font:
         eastAsia: 黑体
-        bold: true
-        sizePt: 20
+        ascii: Times New Roman
+        sizePt: 16
+        color: "#000000"
     "Heading 2 Char":
       type: character
+      $override: true
       font:
-        eastAsia: KaiTi_GB2312
-        ascii: Cambria
-        sizePt: 18
+        eastAsia: 楷体_GB2312
+        ascii: Times New Roman
+        sizePt: 16
+        color: "#000000"
     "Heading 3 Char":
       type: character
+      $override: true
       font:
-        ascii: Cambria
+        eastAsia: 仿宋_GB2312
+        ascii: Times New Roman
         sizePt: 16
+        color: "#000000"
     "Heading 4 Char":
       type: character
+      $override: true
       font:
-        ascii: Cambria
-        bold: true
+        eastAsia: 仿宋_GB2312
+        ascii: Times New Roman
         sizePt: 16
+        color: "#000000"
     "Heading 5 Char":
       type: character
+      $override: true
       font:
-        eastAsia: 宋体
-        ascii: Cambria
-        bold: true
-        sizePt: 14
+        eastAsia: 仿宋_GB2312
+        ascii: Times New Roman
+        sizePt: 16
+        color: "#000000"
+    "Heading 6 Char":
+      type: character
+      $override: true
+      font:
+        eastAsia: 仿宋_GB2312
+        ascii: Times New Roman
+        sizePt: 16
+        color: "#000000"
+    "Heading 7 Char":
+      type: character
+      $override: true
+      font:
+        eastAsia: 仿宋_GB2312
+        ascii: Times New Roman
+        sizePt: 16
+        color: "#000000"
+    "Heading 8 Char":
+      type: character
+      $override: true
+      font:
+        eastAsia: 仿宋_GB2312
+        ascii: Times New Roman
+        sizePt: 16
+        color: "#000000"
+    "Heading 9 Char":
+      type: character
+      $override: true
+      font:
+        eastAsia: 仿宋_GB2312
+        ascii: Times New Roman
+        sizePt: 16
+        color: "#000000"
 
     InfoTable:
       type: table
@@ -296,7 +398,7 @@ doc:
         text: "Docx Stylekit"
     footer:
       - type: pageNumber
-        styleRef: Normal
+        styleRef: PageNumber
         align: center
         pattern: PAGE
 

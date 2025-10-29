@@ -24,9 +24,7 @@ from .render.json_template import expand_document
 from .writer.docx_writer import render_to_docx
 
 
-def _load_default_render_profile(template_docx_path):
-    if template_docx_path:
-        return {}
+def _load_default_render_profile():
     try:
         default_profile_path = resources.files("docx_stylekit.data").joinpath("default_render_template.yaml")
         with resources.as_file(default_profile_path) as p:
@@ -36,7 +34,9 @@ def _load_default_render_profile(template_docx_path):
 
 
 def _prepare_render_input(data, template_docx_path):
-    default_profile = _load_default_render_profile(template_docx_path)
+    if template_docx_path:
+        return data
+    default_profile = _load_default_render_profile()
     if default_profile:
         data = deep_merge(default_profile, data)
     return data
