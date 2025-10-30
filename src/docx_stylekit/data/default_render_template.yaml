@@ -427,7 +427,7 @@ doc:
       format:
         header:
           fill: "#DCE6F1"
-          color: "#1F3864"
+          color: "#000000"
           bold: true
           verticalAlign: center
           border:
