@@ -173,7 +173,7 @@ def _ensure_required_styles(doc: Document, profile: dict, *, allow_override: boo
                 _ensure_paragraph_style(doc, style_name)
 
 
-def _detect_heading_pattern(text: str) -> Optional[tuple[int, str]]:
+def _detect_heading_pattern(text: str) -> Optional[tuple[int, str, str]]:
     if not text:
         return None
     stripped = text.strip()
@@ -181,16 +181,23 @@ def _detect_heading_pattern(text: str) -> Optional[tuple[int, str]]:
     numeric_match = re.match(r"^(\d+(?:\.\d+)*)[\.\s]", stripped)
     if numeric_match:
         segments = numeric_match.group(1).split('.')
-        return len(segments), "numeric"
+        remainder = stripped[numeric_match.end():]
+        return len(segments), "numeric", remainder
     # Chinese numerals
     if re.match(r"^第[一二三四五六七八九十百千]+章", stripped):
-        return 1, "chapter_cn"
+        remainder = stripped[2:]
+        return 1, "chapter_cn", remainder
     if re.match(r"^[一二三四五六七八九十]+、", stripped):
-        return 1, "chinese"
-    if re.match(r"^（[一二三四五六七八九十]+）", stripped) or re.match(r"^\([一二三四五六七八九十]+\)", stripped):
-        return 2, "paren_cn"
-    if re.match(r"^（\d+）", stripped) or re.match(r"^\(\d+\)", stripped):
-        return 2, "paren_num"
+        remainder = stripped[2:]
+        return 1, "chinese", remainder
+    paren_cn = re.match(r"^（[一二三四五六七八九十]+）", stripped) or re.match(r"^\([一二三四五六七八九十]+\)", stripped)
+    if paren_cn:
+        remainder = stripped[paren_cn.end():]
+        return 2, "paren_cn", remainder
+    paren_num = re.match(r"^（\d+）", stripped) or re.match(r"^\(\d+\)", stripped)
+    if paren_num:
+        remainder = stripped[paren_num.end():]
+        return 2, "paren_num", remainder
     return None
 
 
@@ -227,6 +234,7 @@ def _map_style_name(
     in_table: bool = False,
     pattern_level: Optional[int] = None,
     pattern_kind: Optional[str] = None,
+    pattern_remainder: str = "",
     previous_pattern_level: Optional[int] = None,
     previous_pattern_kind: Optional[str] = None,
 ) -> str:
@@ -240,10 +248,11 @@ def _map_style_name(
     original_level = _extract_orig_heading_level(raw_name)
     detected_level = pattern_level
     detected_kind = pattern_kind
+    detected_remainder = pattern_remainder or ""
     if detected_level is None:
         detected = _detect_heading_pattern(stripped)
         if detected:
-            detected_level, detected_kind = detected
+            detected_level, detected_kind, detected_remainder = detected
 
     if detected_level:
         level = detected_level
@@ -267,6 +276,10 @@ def _map_style_name(
                     level = min(previous_level + 1, 9)
                 else:
                     level = detected_level
+        if original_level is None:
+            remainder_stripped = detected_remainder.strip()
+            if len(remainder_stripped) >= 20 or any(ch in remainder_stripped for ch in "：:。！？；，、%"):
+                return "Normal"
         if original_level:
             if previous_level is not None:
                 target = previous_level + 1
@@ -469,6 +482,7 @@ def sanitize_docx(
         pattern_info = _detect_heading_pattern(stripped_text) if stripped_text else None
         pattern_level = pattern_info[0] if pattern_info else None
         pattern_kind = pattern_info[1] if pattern_info else None
+        pattern_remainder = pattern_info[2] if pattern_info else ""
         style_name = _map_style_name(
             original_style,
             text_content,
@@ -477,6 +491,7 @@ def sanitize_docx(
             in_table=in_table,
             pattern_level=pattern_level,
             pattern_kind=pattern_kind,
+            pattern_remainder=pattern_remainder,
             previous_pattern_level=previous_pattern_level,
             previous_pattern_kind=previous_pattern_kind,
         )

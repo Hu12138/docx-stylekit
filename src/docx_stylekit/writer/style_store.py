@@ -106,11 +106,18 @@ def apply_paragraph_ppr(pPr, para: dict):
         ind.set(qn('w:left'), str(int(para["leftIndentCm"] * 567)))  # cm→twips (1cm≈567)
     if para.get("rightIndentCm") is not None:
         ind.set(qn('w:right'), str(int(para["rightIndentCm"] * 567)))
-    # 首行/悬挂（字符数 → 这里简化按每字符 2 个汉字宽，估 0.74cm/字；可按需校准）
+    # 首行/悬挂（直接使用字符单位，避免换算厘米）
     if para.get("firstLineChars") is not None:
-        ind.set(qn('w:firstLine'), str(int(para["firstLineChars"] * 0.74 * 567)))
+        if ind is None:
+            ind = _ensure_child(pPr, 'w:ind')
+        ind.set(qn('w:firstLineChars'), str(int(round(float(para["firstLineChars"]) * 100))))
+        # 移除可能遗留的 w:firstLine，确保以字符为准
+        ind.attrib.pop(qn('w:firstLine'), None)
     if para.get("hangingChars") is not None:
-        ind.set(qn('w:hanging'), str(int(para["hangingChars"] * 0.74 * 567)))
+        if ind is None:
+            ind = _ensure_child(pPr, 'w:ind')
+        ind.set(qn('w:hangingChars'), str(int(round(float(para["hangingChars"]) * 100))))
+        ind.attrib.pop(qn('w:hanging'), None)
     if para.get("outlineLevel") is not None:
         ol = _ensure_child(pPr, 'w:outlineLvl')
         ol.set(qn('w:val'), str(int(para["outlineLevel"])))
